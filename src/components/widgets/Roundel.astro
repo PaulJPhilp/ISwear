@@ -1,0 +1,174 @@
+---
+//import Circle from './../ui/Circle.astro';
+
+interface RoundelBorderProps {
+  strokeWidth: number;
+  stroke: string;
+}
+
+interface RoundelPosition {
+  x: number;
+  y: number;
+}
+
+interface RoundelTextProps {
+  text: string;
+  color: string;
+  class?: string;
+}
+
+interface RoundelCircleProps {
+  radius: number;
+  color: string;
+  center: RoundelPosition;
+  border?: RoundelBorderProps;
+}
+
+interface RoundelRectangleProps {
+  width: number;
+  height: number;
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+  color: string;
+  border?: RoundelBorderProps;
+}
+
+interface RoundelProps {
+  size: number;
+  X: number;
+  Y: number;
+  width: number;
+  height: number;
+  margin?: number;
+  innerCircle: RoundelCircleProps;
+  outerCircle: RoundelCircleProps;
+  rect: RoundelRectangleProps;
+  label: RoundelTextProps;
+}
+
+export function makeRoundel(
+  size: number,
+  label: RoundelTextProps,
+  innerCircle: RoundelCircleProps,
+  outerCircle: RoundelCircleProps,
+  rect: RoundelRectangleProps,
+  position?: RoundelPosition
+): RoundelProps {
+  const RoundelMargin = 0.25;
+  const RoundelOuterCircleRatio = 0.8;
+  const RoundelInnerCircleRatio = 0.6666666666;
+  const RoundelRectWidthRatio = 0.15;
+
+  const X = position?.x ?? 0;
+  const Y = position?.y ?? 0;
+
+  const outerCircleRadius = (size * RoundelOuterCircleRatio) / 2;
+
+  const strokeWidth = 1;
+
+  const roundel: RoundelProps = {
+    size: size,
+    X: X,
+    Y: Y,
+    height: size * (1 + RoundelMargin),
+    width: size * (1 + RoundelMargin),
+    margin: size * RoundelMargin,
+    innerCircle: {
+      radius: outerCircleRadius * RoundelInnerCircleRatio,
+      color: innerCircle.color,
+      center: { x: X + size / 2, y: Y + size / 2 },
+    },
+    outerCircle: {
+      radius: outerCircleRadius,
+      color: outerCircle.color,
+      center: { x: X + size / 2, y: Y + size / 2 },
+    },
+    rect: {
+      width: size,
+      height: size * RoundelRectWidthRatio,
+      top: Y + size / 2 - (size * RoundelRectWidthRatio) / 2,
+      left: X,
+      right: X + size,
+      bottom: Y + size / 2 + (size * RoundelRectWidthRatio) / 2,
+      color: rect.color,
+      border: {
+        strokeWidth: strokeWidth,
+        stroke: rect.border?.stroke ?? rect.color,
+      },
+    },
+    label: {
+      text: label.text,
+      color: label.color,
+      class: 'font-sans font-semibold text-lg text-center',
+    },
+  };
+
+  return roundel;
+}
+
+export interface Props {
+  size: number;
+  X: number;
+  Y: number;
+  width: number;
+  height: number;
+  margin?: number;
+  innerCircle: RoundelCircleProps;
+  outerCircle: RoundelCircleProps;
+  rect: RoundelRectangleProps;
+  label: RoundelTextProps;
+}
+
+const roundel = Astro.props;
+---
+
+<div>
+  <svg
+    width={`${roundel.width}`}
+    height={`${roundel.height}`}
+    viewBox={`${roundel.X} ${roundel.Y} ${roundel.width} ${roundel.height}`}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g>
+      <circle
+        cx={roundel.outerCircle.center.x}
+        cy={roundel.outerCircle.center.y}
+        r={roundel.outerCircle.radius}
+        fill={roundel.outerCircle.color}
+      >
+      </circle>
+
+      <circle
+        cx={roundel.innerCircle.center.x}
+        cy={roundel.innerCircle.center.y}
+        r={roundel.innerCircle.radius}
+        fill={roundel.innerCircle.color}
+      >
+      </circle>
+
+      <rect
+        x={roundel.rect.left}
+        y={roundel.rect.top}
+        width={roundel.rect.width}
+        height={roundel.rect.height}
+        fill={roundel.rect.color}
+        stroke={roundel.rect.border?.stroke}
+        stroke-width={roundel.rect.border?.strokeWidth}
+      >
+      </rect>
+
+      <text
+        x={(roundel.rect.left + roundel.rect.right) / 2}
+        y={(roundel.rect.top + roundel.rect.bottom) / 2}
+        text-anchor="middle"
+        alignment-baseline="central"
+        fill={roundel.label.color}
+        class={roundel.label.class}
+      >
+        {roundel.label.text}
+      </text>
+    </g>
+  </svg>
+</div>

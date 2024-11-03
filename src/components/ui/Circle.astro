@@ -1,0 +1,45 @@
+---
+type Circle = {
+  radius: number;
+
+  color: string;
+  strokeWidth: number;
+  stroke: string;
+  class?: string;
+  margin?: number;
+};
+
+interface Props extends Circle {
+  radius: number;
+  cx: number;
+  cy: number;
+  color: string;
+  strokeWidth: number;
+  stroke: string;
+  class?: string;
+  margin?: number;
+}
+
+const {
+  radius = 50,
+  cx = 400,
+  cy = 400,
+  margin = 0,
+  stroke = 'blue',
+  color = 'pink',
+  strokeWidth = 1,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const width = (radius + strokeWidth + margin) * 2;
+const height = width;
+
+console.log(`Circle width: ${width}, height: ${height}`);
+console.log(`Circle radius: ${radius}, strokeWidth: ${strokeWidth}, margin: ${margin}`);
+console.log(`Circle cx: ${cx}, cy: ${cy}`);
+---
+
+<svg class={className} width={width} height={height} {...rest}>
+  <circle viewBox="0 0 {height} {width}" cx={cx} cy={cy} r={radius} stroke={stroke} fill={color} stroke-width={strokeWidth}></circle>
+</svg>

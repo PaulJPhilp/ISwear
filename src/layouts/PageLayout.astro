@@ -3,8 +3,10 @@ import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import Announcement from '~/components/widgets/Announcement.astro';
+import Roundel, { makeRoundel } from '~/components/widgets/Roundel.astro';
 
-import { headerData, footerData } from '~/navigation';
+import { headerData } from '~/navigation';
+import { footerData } from '~/navigation';
 
 import type { MetaData } from '~/types';
 
@@ -22,10 +24,15 @@ const { metadata } = Astro.props;
   <slot name="header">
     <Header {...headerData} isSticky showRssFeed showToggleTheme />
   </slot>
-  <main>
-    <slot />
-  </main>
-  <slot name="footer">
-    <Footer {...footerData} />
-  </slot>
+  <Roundel {...makeRoundel(100,
+      { text: 'London', color: 'red' },
+      { center: { x: 50, y: 50 }, radius: 50, color: 'white' },
+      { center: { x: 50, y: 50 }, radius: 10, color: 'orange' },
+      { top: 0, right: 0, bottom: 0, left: 0, color: 'green', width: 100, height: 100 },
+      { x: 100, y: 100 }
+    )}
+  />
+  <Footer {...footerData}>
+    <slot name="footer" />
+  </Footer>
 </Layout>

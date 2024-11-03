@@ -1,5 +1,5 @@
 site:
-  name: AstroWind
+  name: I Swear It Happened Like This
   site: 'https://astrowind.vercel.app'
   base: '/'
   trailingSlash: false
@@ -9,14 +9,14 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    default: I Swear It Happened Like This
+    template: '%s — I Swear It Happened Like This'
+  description: "\U0001F680 Description"
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
+    site_name: I Swear It Happened Like This
     images:
       - url: '~/assets/images/default.png'
         width: 1200
