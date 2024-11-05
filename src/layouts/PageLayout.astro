@@ -15,6 +15,28 @@ export interface Props {
 }
 
 const { metadata } = Astro.props;
+
+/*** Roundel ***
+
+  <Roundel
+    {...makeRoundel(
+      100,
+      {
+        text: 'LONDON',
+        color: 'red',
+      },
+      { center: { x: 50, y: 50 }, radius: 50, color: '#FFFFFF' },
+      { center: { x: 50, y: 50 }, radius: 10, color: 'orange' },
+      {
+        top: 0,
+        left: 0,
+        color: '#113B92', // Use actual color instead of 'tflBlue'
+        width: 100,
+        height: 100,
+      },
+      { x: 100, y: 100 }
+    )}
+      ***/
 ---
 
 <Layout metadata={metadata}>
@@ -24,15 +46,26 @@ const { metadata } = Astro.props;
   <slot name="header">
     <Header {...headerData} isSticky showRssFeed showToggleTheme />
   </slot>
-  <Roundel {...makeRoundel(100,
-      { text: 'London', color: 'red' },
-      { center: { x: 50, y: 50 }, radius: 50, color: 'white' },
-      { center: { x: 50, y: 50 }, radius: 10, color: 'orange' },
-      { top: 0, right: 0, bottom: 0, left: 0, color: 'green', width: 100, height: 100 },
-      { x: 100, y: 100 }
-    )}
-  />
   <Footer {...footerData}>
     <slot name="footer" />
   </Footer>
+  <Roundel
+    {...makeRoundel(
+      100,
+      {
+        text: 'LONDON',
+        color: 'red',
+      },
+      { center: { x: 50, y: 50 }, radius: 50, color: '#FFFFFF' },
+      { center: { x: 50, y: 50 }, radius: 10, color: 'orange' },
+      {
+        top: 0,
+        left: 0,
+        color: '#113B92', // Use actual color instead of 'tflBlue'
+        width: 100,
+        height: 100,
+      },
+      { x: 100, y: 100 }
+    )}
+  />
 </Layout>
