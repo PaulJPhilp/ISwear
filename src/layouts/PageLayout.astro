@@ -3,7 +3,7 @@ import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import Announcement from '~/components/widgets/Announcement.astro';
-import Roundel, { makeRoundel } from '~/components/widgets/Roundel.astro';
+import Roundel, { makeRoundel, type RoundelProps } from '~/components/widgets/Roundel.astro';
 
 import { headerData } from '~/navigation';
 import { footerData } from '~/navigation';
@@ -16,27 +16,42 @@ export interface Props {
 
 const { metadata } = Astro.props;
 
-/*** Roundel ***
+const MaxCount = 10;
+let count = 0;
+const Size = 100;
 
-  <Roundel
-    {...makeRoundel(
-      100,
-      {
-        text: 'LONDON',
-        color: 'red',
-      },
-      { center: { x: 50, y: 50 }, radius: 50, color: '#FFFFFF' },
-      { center: { x: 50, y: 50 }, radius: 10, color: 'orange' },
-      {
-        top: 0,
-        left: 0,
-        color: '#113B92', // Use actual color instead of 'tflBlue'
-        width: 100,
-        height: 100,
-      },
-      { x: 100, y: 100 }
-    )}
-      ***/
+const tubeLines = [
+  { name: 'Bakerloo', color: '#B36305', rectColor: 'orange', textColor: 'purple' },
+  { name: 'Central', color: '#E32017', rectColor: '#E32017', textColor: 'white' },
+  { name: 'Circle', color: '#FFD300', rectColor: '#FFD300', textColor: 'green' },
+  { name: 'District', color: '#00782A', rectColor: '#00782A', textColor: 'white' },
+  { name: 'Hammersmith & City', color: '#F3A9BB', rectColor: '#F3A9BB', textColor: 'darkslategray' },
+  { name: 'Jubilee', color: '#A0A5A9', rectColor: '#A0A5A9', textColor: 'white' },
+  { name: 'Metropolitan', color: '#9B0056', rectColor: '#9B0056', textColor: 'white' },
+  { name: 'Northern', color: '#000000', rectColor: '#000000', textColor: 'white' },
+  { name: 'Piccadilly', color: '#003688', rectColor: '#003688', textColor: 'white' },
+  { name: 'Victoria', color: '#0098D4', rectColor: '#0098D4', textColor: 'white' },
+  { name: 'Waterloo & City', color: '#95CDBA', rectColor: '#95CDBA', textColor: 'white' },
+  { name: 'Elizabeth', color: '#6950A1', rectColor: '#6950A1', textColor: 'white' },
+  { name: 'DLR', color: '#00A4A7', rectColor: '#00A4A7', textColor: 'white' },
+];
+
+function* generateRoundels(c: number, s: number, col: number = 1): Generator<RoundelProps> {
+  const color = tubeLines[c].color;
+  const rectColor = tubeLines[c].rectColor;
+  const textColor = tubeLines[c].textColor;
+  const size = s * col;
+  const roundel = makeRoundel(
+    size,
+    { x: 100 * count, y: count < 5 ? 100 * col : 300 * col },
+    { text: tubeLines[c].name, fontSize: '16px', color: textColor },
+    { center: { x: 50, y: 50 }, radius: 10, color: 'white' },
+    { center: { x: 50, y: 50 }, radius: 50, color: color },
+    { top: 0, left: 0, color: rectColor, width: 100, height: 100 }
+  );
+  count++;
+  return yield roundel;
+}
 ---
 
 <Layout metadata={metadata}>
@@ -49,23 +64,14 @@ const { metadata } = Astro.props;
   <Footer {...footerData}>
     <slot name="footer" />
   </Footer>
-  <Roundel
-    {...makeRoundel(
-      100,
-      {
-        text: 'LONDON',
-        color: 'red',
-      },
-      { center: { x: 50, y: 50 }, radius: 50, color: '#FFFFFF' },
-      { center: { x: 50, y: 50 }, radius: 10, color: 'orange' },
-      {
-        top: 0,
-        left: 0,
-        color: '#113B92', // Use actual color instead of 'tflBlue'
-        width: 100,
-        height: 100,
-      },
-      { x: 100, y: 100 }
-    )}
-  />
+  <p class="text-tflBlue">This is a test</p>
+  <Fragment>
+    <div class="inline"></div>
+      {[...Array(MaxCount)].map(() => <Roundel {...[...generateRoundels(count, Size)][0]} />)}
+      {(count = 0)}
+    </div>
+  </Fragment>
+  <Fragment>
+    {[...Array(MaxCount)].map(() => <Roundel {...[...generateRoundels(count, Size / 2, 2)][0]} />)}
+  </Fragment>
 </Layout>
