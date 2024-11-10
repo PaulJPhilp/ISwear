@@ -1,14 +1,48 @@
 ---
+import Roundel, { makeRoundel, type RoundelProps } from '~/components/widgets/Roundel.astro';
 
+type Color = string;
+type AnnouncementType = 'News' | 'Video' | 'Courses';
+
+type AnnouncementRoundel = {
+  type: AnnouncementType;
+  color: Color;
+  rectColor: Color;
+  textColor: Color;
+};
+
+export function* generateRoundels(type: AnnouncementType, s: number, col: number = 1): Generator<RoundelProps> {
+  const roundels: AnnouncementRoundel[] = [
+    { type: 'News', color: '#B36305', rectColor: '#B36305', textColor: 'yellow' },
+    { type: 'Video', color: 'lightgreen', rectColor: 'lightgreen', textColor: 'red' },
+    { type: 'Courses', color: 'silver', rectColor: 'silver', textColor: 'purple' },
+  ];
+
+  const roundel = roundels.find((r) => r.type === type);
+  if (!roundel) throw new Error(`Unknown type: ${type}`);
+
+  const color = roundel?.color;
+  const rectColor = roundel?.rectColor;
+  const textColor = roundel?.textColor;
+  const size = s * col;
+
+  yield makeRoundel(
+    size,
+    { x: 0, y: 0 },
+    { text: roundel.type, fontSize: '16px', color: textColor },
+    { center: { x: 50, y: 50 }, radius: 1, color: 'white' },
+    { center: { x: 50, y: 50 }, radius: 5, color: color },
+    { top: 0, left: 0, color: rectColor, width: 10, height: 10 }
+  );
+}
 ---
 
 <div
   class="dark text-muted text-sm bg-black dark:bg-transparent dark:border-b dark:border-slate-800 dark:text-slate-400 hidden md:flex gap-1 overflow-hidden px-3 py-2 relative text-ellipsis whitespace-nowrap"
 >
-  <span
-    class="dark:bg-teal-700 bg-white/40 dark:text-teak-300 font-semibold px-1 py-0.5 text-xs mr-0.5 rtl:mr-0 rtl:ml-0.5 inline-block"
-    >NEWS</span
-  >
+  <div class="w-12 h-12 flex items-center justify-center">
+    <Roundel {...[...generateRoundels('News', 50)][0]} />
+  </div>
   <a
     href="https://effect.website/blog/effect-3.9#effectservice"
     class="text-muted hover:underline dark:text-teal-300 font-medium"
@@ -16,10 +50,9 @@
   >
 
   <!-- Added margin-left to create space -->
-  <span
-    class="ml-4 dark:bg-orange-700 bg-white/40 dark:text-orange-300 font-semibold px-1 py-0.5 text-xs mr-0.5 rtl:mr-0 rtl:ml-0.5 inline-block"
-    >Video</span
-  >
+  <div class="w-12 h-12 flex items-center justify-center">
+    <Roundel {...[...generateRoundels('Video', 50)][0]} />
+  </div>
 
   <a
     href="https://www.youtube.com/watch?v=cz1f4hG7ook&pp=ygUIU3ZlbHRlIDU%3D"
@@ -28,13 +61,13 @@
   >
 
   <!-- Added margin-left to create space -->
-  <span
-    class="ml-4 dark:bg-purple-700 bg-white/40 dark:text-purple-300 font-semibold px-1 py-0.5 text-xs mr-0.5 rtl:mr-0 rtl:ml-0.5 inline-block"
-    >Course</span
-  >
+  <div class="w-12 h-12 flex items-center justify-center">
+    <Roundel {...[...generateRoundels('Courses', 50)][0]} />
+  </div>
 
   <a
     href="https://www.typeonce.dev/course/paddle-payments-full-stack-typescript-app"
-    class="text-muted hover:underline dark:text-purple-300 font-medium">Full Stack TypeScript App with Billing - Sandro Maglione</a
+    class="text-muted hover:underline dark:text-purple-300 font-medium"
+    >Full Stack TypeScript App with Billing - Sandro Maglione</a
   >
 </div>

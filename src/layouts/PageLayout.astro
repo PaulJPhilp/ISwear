@@ -64,14 +64,13 @@ function* generateRoundels(c: number, s: number, col: number = 1): Generator<Rou
   <Footer {...footerData}>
     <slot name="footer" />
   </Footer>
-  <p class="text-tflBlue">This is a test</p>
   <Fragment>
-    <div class="inline"></div>
+    <div class="flex flex-row justify-center">
       {[...Array(MaxCount)].map(() => <Roundel {...[...generateRoundels(count, Size)][0]} />)}
       {(count = 0)}
     </div>
   </Fragment>
-  <Fragment>
-    {[...Array(MaxCount)].map(() => <Roundel {...[...generateRoundels(count, Size / 2, 2)][0]} />)}
-  </Fragment>
 </Layout>
+<Fragment>
+  {[...Array(MaxCount)].map(() => <Roundel {...[...generateRoundels(count, Size / 2, 2)][0]} />)}
+</Fragment>
