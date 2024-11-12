@@ -11,11 +11,11 @@ type AnnouncementRoundel = {
   textColor: Color;
 };
 
-export function* generateRoundels(type: AnnouncementType, s: number, col: number = 1): Generator<RoundelProps> {
+export function* generateRoundels(type: AnnouncementType, s: number, col = 1): Generator<RoundelProps> {
   const roundels: AnnouncementRoundel[] = [
-    { type: 'News', color: '#B36305', rectColor: '#B36305', textColor: 'yellow' },
-    { type: 'Video', color: 'lightgreen', rectColor: 'lightgreen', textColor: 'red' },
-    { type: 'Courses', color: 'silver', rectColor: 'silver', textColor: 'purple' },
+    { type: 'News', color: '#008000', rectColor: '#008000', textColor: '#ffffff' },
+    { type: 'Video', color: '#8B0000', rectColor: '#8B0000', textColor: '#ffffff' },
+    { type: 'Courses', color: '#800080', rectColor: '#800080', textColor: '#ffffff' },
   ];
 
   const roundel = roundels.find((r) => r.type === type);
@@ -35,39 +35,39 @@ export function* generateRoundels(type: AnnouncementType, s: number, col: number
     { top: 0, left: 0, color: rectColor, width: 10, height: 10 }
   );
 }
+
+/****
+
+ */
 ---
 
 <div
   class="dark text-muted text-sm bg-black dark:bg-transparent dark:border-b dark:border-slate-800 dark:text-slate-400 hidden md:flex gap-1 overflow-hidden px-3 py-2 relative text-ellipsis whitespace-nowrap"
 >
-  <div class="w-12 h-12 flex items-center justify-center">
-    <Roundel {...[...generateRoundels('News', 50)][0]} />
-  </div>
-  <a
-    href="https://effect.website/blog/effect-3.9#effectservice"
-    class="text-muted hover:underline dark:text-teal-300 font-medium"
-    >Effect 3.9 is now available with simplified Services. »</a
-  >
-
-  <!-- Added margin-left to create space -->
-  <div class="w-12 h-12 flex items-center justify-center">
+  <div class="flex flex-row flex-wrap justify-center items-center gap-6">
+    <div>
+      <Roundel {...[...generateRoundels('News', 50)][0]} />
+    </div>
+    <div px-6>
+      <a
+        href="https://effect.website/blog/effect-3.9#effectservice"
+        class="text-muted hover:underline dark:text-teal-300 font-medium"
+        >Effect 3.9 is now available with simplified Services. »</a
+      >
+    </div>
     <Roundel {...[...generateRoundels('Video', 50)][0]} />
-  </div>
-
-  <a
-    href="https://www.youtube.com/watch?v=cz1f4hG7ook&pp=ygUIU3ZlbHRlIDU%3D"
-    class="text-muted hover:underline dark:text-orange-300 font-medium"
-    >Svelte 5 Ruined Svelte (and that's why I love it) - Ben Davis»</a
-  >
-
-  <!-- Added margin-left to create space -->
-  <div class="w-12 h-12 flex items-center justify-center">
+    <div px-6>
+      <a
+        href="https://effect.website/blog/effect-3.9#effectservice"
+        class="text-muted hover:underline dark:text-pink-300 font-medium"
+        >Effect 3.9 is now available with simplified Services. »</a
+      >
+    </div>
     <Roundel {...[...generateRoundels('Courses', 50)][0]} />
+    <a
+      href="https://effect.website/blog/effect-3.9#effectservice"
+      class="text-muted hover:underline dark:text-purple-300 font-medium"
+      >Effect 3.9 is now available with simplified Services. »</a
+    >
   </div>
-
-  <a
-    href="https://www.typeonce.dev/course/paddle-payments-full-stack-typescript-app"
-    class="text-muted hover:underline dark:text-purple-300 font-medium"
-    >Full Stack TypeScript App with Billing - Sandro Maglione</a
-  >
 </div>

@@ -16,9 +16,9 @@ export interface Props {
 
 const { metadata } = Astro.props;
 
-const MaxCount = 10;
+//const MaxCount = 10;
 let count = 0;
-const Size = 100;
+//const Size = 100;
 
 const tubeLines = [
   { name: 'Bakerloo', color: '#B36305', rectColor: 'orange', textColor: 'purple' },
@@ -36,15 +36,15 @@ const tubeLines = [
   { name: 'DLR', color: '#00A4A7', rectColor: '#00A4A7', textColor: 'white' },
 ];
 
-function* generateRoundels(c: number, s: number, col: number = 1): Generator<RoundelProps> {
+function* generateRoundels(c: number, s: number, col = 1): Generator<RoundelProps> {
   const color = tubeLines[c].color;
   const rectColor = tubeLines[c].rectColor;
   const textColor = tubeLines[c].textColor;
   const size = s * col;
-  const roundel = makeRoundel(
+  const roundel = makeRoundel(//
     size,
     { x: 100 * count, y: count < 5 ? 100 * col : 300 * col },
-    { text: tubeLines[c].name, fontSize: '16px', color: textColor },
+    { text: tubeLines[c].name, fontSize: '16px', fontWeight: 'bold', color: textColor },
     { center: { x: 50, y: 50 }, radius: 10, color: 'white' },
     { center: { x: 50, y: 50 }, radius: 50, color: color },
     { top: 0, left: 0, color: rectColor, width: 100, height: 100 }
@@ -64,13 +64,4 @@ function* generateRoundels(c: number, s: number, col: number = 1): Generator<Rou
   <Footer {...footerData}>
     <slot name="footer" />
   </Footer>
-  <Fragment>
-    <div class="flex flex-row justify-center">
-      {[...Array(MaxCount)].map(() => <Roundel {...[...generateRoundels(count, Size)][0]} />)}
-      {(count = 0)}
-    </div>
-  </Fragment>
 </Layout>
-<Fragment>
-  {[...Array(MaxCount)].map(() => <Roundel {...[...generateRoundels(count, Size / 2, 2)][0]} />)}
-</Fragment>

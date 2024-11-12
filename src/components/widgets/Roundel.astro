@@ -9,10 +9,11 @@ interface RoundelPosition {
   y: number;
 }
 
-interface RoundelTextProps {
+interface RoundelLabelProps {
   text: string;
   color: string;
   fontSize: string;
+  fontWeight?: string;
 }
 
 interface RoundelCircleProps {
@@ -48,27 +49,29 @@ export interface RoundelProps {
   innerCircle: RoundelCircleProps;
   outerCircle: RoundelCircleProps;
   rect: RoundelRectangleProps;
-  label: RoundelTextProps;
+  label: RoundelLabelProps;
 }
 
-export function calcFontSize(size: number, text: string, defaultFontSize: number = 16) {
+export function calcFontSize(size: number, text: string, defaultFontSize = 16) {
+  console.log(`calcFontSize: ${size} ${text} ${defaultFontSize}`);
 
   if (text.length === 0) return '0px';
 
-  if (defaultFontSize < 8) return '8px';
+  if (defaultFontSize < 6) return '6px';
 
   const fSize =  defaultFontSize;
-  const textWidth = text.length * fSize * 0.9;
+  const textWidth = text.length * fSize * 1.2;
   if (textWidth > size) {
     return calcFontSize(size, text, defaultFontSize - 1);
   }
+  console.log(fSize);
   return `${fSize}px`;
 }
 
 export function makeRoundel(
   size: number,
   position: RoundelPosition,
-  label: RoundelTextProps,
+  label: RoundelLabelProps,
   innerCircle: RoundelCircleProps,
   outerCircle: RoundelCircleProps,
   rect: RoundelRectangleProps,
@@ -123,6 +126,7 @@ export function makeRoundel(
       text: label.text,
       color: label.color,
       fontSize: calcFontSize(size * (1 + RoundelMargin), label.text),
+      fontWeight: label.fontWeight ?? 'normal',
     },
   };
 
@@ -138,7 +142,7 @@ export interface Props {
   innerCircle: RoundelCircleProps;
   outerCircle: RoundelCircleProps;
   rect: RoundelRectangleProps;
-  label: RoundelTextProps;
+  label: RoundelLabelProps;
 }
 
 const roundel = Astro.props;
@@ -189,7 +193,7 @@ const roundel = Astro.props;
       alignment-baseline="middle"
       fill={roundel.label.color}
       font-family="sans-serif"
-      font-weight="normal"
+      font-weight={roundel.label.fontWeight}
       font-size=`${calcFontSize(roundel.size*2 , roundel.label.text)}`
     >
       {roundel.label.text}

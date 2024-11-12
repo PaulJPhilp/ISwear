@@ -1,9 +1,31 @@
 ---
 import { SITE } from 'astrowind:config';
+import Roundel, { makeRoundel, type RoundelProps } from '~/components/widgets/Roundel.astro';
+
+export const Logos = [{ name: 'Paul Philp', color: '#B36305', rectColor: 'orange', textColor: 'purple' }];
+
+function* generateRoundels(c: number, s: number, col = 1): Generator<RoundelProps> {
+  const color = Logos[c].color;
+  const rectColor = Logos[c].rectColor;
+  const textColor = Logos[c].textColor;
+  const size = s * col;
+  const roundel = makeRoundel(
+    size,
+    { x: 100, y: 100 },
+    { text: Logos[c].name, fontSize: '16px', fontWeight: 'bold', color: textColor },
+    { center: { x: 50, y: 50 }, radius: 10, color: 'white' },
+    { center: { x: 50, y: 50 }, radius: 50, color: color },
+    { top: 0, left: 0, color: rectColor, width: 100, height: 100 }
+  );
+  return yield roundel;
+}
 ---
 
 <span
   class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:text-white"
 >
-  🚀 {SITE?.name}
+  <div class="flex flex-row flex-wrap justify-center items-center gap-6">
+    <Roundel {...[...generateRoundels(0, 100)][0]} />
+    {SITE?.name}
+  </div>
 </span>
