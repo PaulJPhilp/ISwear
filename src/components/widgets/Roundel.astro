@@ -1,4 +1,10 @@
 ---
+type BaseColor = 'black' | 'white' | 'red' | 'green' | 'blue' | 'yellow' | 'cyan' | 'magenta' | 'gray';
+type HexColor = `#${string}`;
+type RgbColor = `rgb(${number}, ${number}, ${number})`;
+type RgbaColor = `rgba(${number}, ${number}, ${number}, ${number})`;
+export type Color = BaseColor |HexColor | RgbColor | RgbaColor;
+
 interface RoundelBorderProps {
   strokeWidth: number;
   stroke: string;
@@ -10,15 +16,15 @@ interface RoundelPosition {
 }
 
 interface RoundelLabelProps {
-  text: string;
-  color: string;
-  fontSize: string;
+  label: string;
+  color: Color;
+  fontSize?: string;
   fontWeight?: string;
 }
 
 interface RoundelCircleProps {
   radius: number;
-  color: string;
+  color: Color;
   center: RoundelPosition;
   border?: RoundelBorderProps;
 }
@@ -28,16 +34,16 @@ interface RoundelRectangleProps {
   height: number;
   top: number;
   left: number;
-  color: string;
+  color: Color;
   border?: RoundelBorderProps;
 }
 
 interface makeRoundelOptions {
-  margin?: number;
-  outerCircleRatio?: number;
-  innerCircleRatio?: number;
-  rectHeightRatio?: number;
-  fontSize?: number;
+  margin: number | undefined;
+  outerCircleRatio: number | undefined;
+  innerCircleRatio: number | undefined;
+  rectHeightRatio: number | undefined;
+  fontSize: number | undefined;
 }
 
 export interface RoundelProps {
@@ -52,19 +58,44 @@ export interface RoundelProps {
   label: RoundelLabelProps;
 }
 
+export interface RoundelDefinition {
+  size: number;
+  height: number;
+  margin: number;
+  position: RoundelPosition;
+  label: RoundelLabelProps;
+  color: Color;
+  rectColor: Color;
+  textColor: Color;
+}
+
+export function* generateRoundels(def: RoundelDefinition, s: number, col = 1): Generator<RoundelProps> {
+  console.log(`generateRoundels:`);
+  const color = def.color;
+  const rectColor = def.rectColor;
+  const size = s * col;
+  const roundel = makeRoundel(
+    size,
+    { x: 100, y: 100 },
+    { label: def.label.label, fontSize: def.label.fontSize ?? '16px', fontWeight: def.label.fontWeight ?? "normal", color: def.label.color },
+    { center: { x: 50, y: 50 }, radius: 10, color: 'white' },
+    { center: { x: 50, y: 50 }, radius: 50, color: color },
+    { top: 0, left: 0, color: rectColor, width: 100, height: 100 }
+  );
+  return yield roundel;
+}
+
 export function calcFontSize(size: number, text: string, defaultFontSize = 16) {
   console.log(`calcFontSize: ${size} ${text} ${defaultFontSize}`);
-
   if (text.length === 0) return '0px';
 
   if (defaultFontSize < 6) return '6px';
 
-  const fSize =  defaultFontSize;
+  const fSize = defaultFontSize;
   const textWidth = text.length * fSize * 1.2;
   if (textWidth > size) {
     return calcFontSize(size, text, defaultFontSize - 1);
   }
-  console.log(fSize);
   return `${fSize}px`;
 }
 
@@ -77,6 +108,7 @@ export function makeRoundel(
   rect: RoundelRectangleProps,
   options?: makeRoundelOptions
 ): RoundelProps {
+  console.log(`makeRoundel: ${size} ${position.x} ${position.y} ${label.label} ${innerCircle.radius} ${outerCircle.radius} ${rect.width} ${rect.height}`);
   const RoundelMargin = options?.margin ?? 0.25;
   const RoundelOuterCircleRatio = options?.outerCircleRatio ?? 0.8;
   const RoundelInnerCircleRatio = options?.innerCircleRatio ?? 0.6666666666;
@@ -123,9 +155,9 @@ export function makeRoundel(
     },
 
     label: {
-      text: label.text,
+      label: label.label,
       color: label.color,
-      fontSize: calcFontSize(size * (1 + RoundelMargin), label.text),
+      fontSize: calcFontSize(size * (1 + RoundelMargin), label.label),
       fontWeight: label.fontWeight ?? 'normal',
     },
   };
@@ -150,52 +182,52 @@ const roundel = Astro.props;
 // <div class="flex items-center justify-center h-full">
 ---
 
-  <svg
-    width={`${roundel.width}`}
-    height={`${roundel.height}`}
-    viewBox={`${roundel.position.x} ${roundel.position.y} ${roundel.width} ${roundel.height}`}
-    xmlns="http://www.w3.org/2000/svg"
+<svg
+  width={`${roundel.width}`}
+  height={`${roundel.height}`}
+  viewBox={`${roundel.position.x} ${roundel.position.y} ${roundel.width} ${roundel.height}`}
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Outer Circle -->
+  <circle
+    cx={roundel.outerCircle.center.x}
+    cy={roundel.outerCircle.center.y}
+    r={roundel.outerCircle.radius}
+    fill={roundel.outerCircle.color}
+    stroke={roundel.outerCircle.border?.stroke}
+    stroke-width={roundel.outerCircle.border?.strokeWidth}></circle>
+
+  <!-- Inner Circle -->
+  <circle
+    cx={roundel.innerCircle.center.x}
+    cy={roundel.innerCircle.center.y}
+    r={roundel.innerCircle.radius}
+    fill={roundel.innerCircle.color}
+    stroke={roundel.innerCircle.border?.stroke}
+    stroke-width={roundel.innerCircle.border?.strokeWidth}></circle>
+
+  <!-- Rectangle -->
+  <rect
+    x={roundel.rect.left}
+    y={roundel.rect.top}
+    width={roundel.rect.width}
+    height={roundel.rect.height}
+    fill={roundel.rect.color}
+    stroke={roundel.rect.border?.stroke}
+    stroke-width={roundel.rect.border?.strokeWidth}></rect>
+
+  <text
+    x={roundel.rect.left + roundel.rect.width / 2}
+    y={roundel.rect.top + roundel.rect.height / 2}
+    text-length=`${roundel.size}px`
+    dy="0.105em"
+    text-anchor="middle"
+    alignment-baseline="middle"
+    fill={roundel.label.color}
+    font-family="sans-serif"
+    font-weight={roundel.label.fontWeight}
+    font-size=`${calcFontSize(roundel.size*2 , roundel.label.label)}`
   >
-    <!-- Outer Circle -->
-    <circle
-      cx={roundel.outerCircle.center.x}
-      cy={roundel.outerCircle.center.y}
-      r={roundel.outerCircle.radius}
-      fill={roundel.outerCircle.color}
-      stroke={roundel.outerCircle.border?.stroke}
-      stroke-width={roundel.outerCircle.border?.strokeWidth}></circle>
-
-    <!-- Inner Circle -->
-    <circle
-      cx={roundel.innerCircle.center.x}
-      cy={roundel.innerCircle.center.y}
-      r={roundel.innerCircle.radius}
-      fill={roundel.innerCircle.color}
-      stroke={roundel.innerCircle.border?.stroke}
-      stroke-width={roundel.innerCircle.border?.strokeWidth}></circle>
-
-    <!-- Rectangle -->
-    <rect
-      x={roundel.rect.left}
-      y={roundel.rect.top}
-      width={roundel.rect.width}
-      height={roundel.rect.height}
-      fill={roundel.rect.color}
-      stroke={roundel.rect.border?.stroke}
-      stroke-width={roundel.rect.border?.strokeWidth}></rect>
-
-    <text
-      x={roundel.rect.left + roundel.rect.width / 2}
-      y={roundel.rect.top + roundel.rect.height / 2}
-      text-length=`${roundel.size}px`
-      dy="0.105em"
-      text-anchor="middle"
-      alignment-baseline="middle"
-      fill={roundel.label.color}
-      font-family="sans-serif"
-      font-weight={roundel.label.fontWeight}
-      font-size=`${calcFontSize(roundel.size*2 , roundel.label.text)}`
-    >
-      {roundel.label.text}
-    </text>
-  </svg>
+    {roundel.label.label}
+  </text>
+</svg>

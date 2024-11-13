@@ -3,11 +3,8 @@ import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import Announcement from '~/components/widgets/Announcement.astro';
-import Roundel, { makeRoundel, type RoundelProps } from '~/components/widgets/Roundel.astro';
-
 import { headerData } from '~/navigation';
 import { footerData } from '~/navigation';
-
 import type { MetaData } from '~/types';
 
 export interface Props {
@@ -16,10 +13,7 @@ export interface Props {
 
 const { metadata } = Astro.props;
 
-//const MaxCount = 10;
-let count = 0;
-//const Size = 100;
-
+/***
 const tubeLines = [
   { name: 'Bakerloo', color: '#B36305', rectColor: 'orange', textColor: 'purple' },
   { name: 'Central', color: '#E32017', rectColor: '#E32017', textColor: 'white' },
@@ -35,23 +29,7 @@ const tubeLines = [
   { name: 'Elizabeth', color: '#6950A1', rectColor: '#6950A1', textColor: 'white' },
   { name: 'DLR', color: '#00A4A7', rectColor: '#00A4A7', textColor: 'white' },
 ];
-
-function* generateRoundels(c: number, s: number, col = 1): Generator<RoundelProps> {
-  const color = tubeLines[c].color;
-  const rectColor = tubeLines[c].rectColor;
-  const textColor = tubeLines[c].textColor;
-  const size = s * col;
-  const roundel = makeRoundel(//
-    size,
-    { x: 100 * count, y: count < 5 ? 100 * col : 300 * col },
-    { text: tubeLines[c].name, fontSize: '16px', fontWeight: 'bold', color: textColor },
-    { center: { x: 50, y: 50 }, radius: 10, color: 'white' },
-    { center: { x: 50, y: 50 }, radius: 50, color: color },
-    { top: 0, left: 0, color: rectColor, width: 100, height: 100 }
-  );
-  count++;
-  return yield roundel;
-}
+***/
 ---
 
 <Layout metadata={metadata}>

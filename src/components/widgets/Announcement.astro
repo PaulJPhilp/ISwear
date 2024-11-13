@@ -1,7 +1,6 @@
 ---
 import Roundel, { makeRoundel, type RoundelProps } from '~/components/widgets/Roundel.astro';
-
-type Color = string;
+import type { Color } from '~/components/widgets/Roundel.astro';
 type AnnouncementType = 'News' | 'Video' | 'Courses';
 
 type AnnouncementRoundel = {
@@ -11,7 +10,7 @@ type AnnouncementRoundel = {
   textColor: Color;
 };
 
-export function* generateRoundels(type: AnnouncementType, s: number, col = 1): Generator<RoundelProps> {
+export function* generateAnnouncementRoundels(type: AnnouncementType, s: number, col = 1): Generator<RoundelProps> {
   const roundels: AnnouncementRoundel[] = [
     { type: 'News', color: '#008000', rectColor: '#008000', textColor: '#ffffff' },
     { type: 'Video', color: '#8B0000', rectColor: '#8B0000', textColor: '#ffffff' },
@@ -29,7 +28,7 @@ export function* generateRoundels(type: AnnouncementType, s: number, col = 1): G
   yield makeRoundel(
     size,
     { x: 0, y: 0 },
-    { text: roundel.type, fontSize: '16px', color: textColor },
+    { label: roundel.type, fontSize: '16px', color: textColor },
     { center: { x: 50, y: 50 }, radius: 1, color: 'white' },
     { center: { x: 50, y: 50 }, radius: 5, color: color },
     { top: 0, left: 0, color: rectColor, width: 10, height: 10 }
@@ -46,7 +45,7 @@ export function* generateRoundels(type: AnnouncementType, s: number, col = 1): G
 >
   <div class="flex flex-row flex-wrap justify-center items-center gap-6">
     <div>
-      <Roundel {...[...generateRoundels('News', 50)][0]} />
+      <Roundel {...[...generateAnnouncementRoundels('News', 50)][0]} />
     </div>
     <div px-6>
       <a
@@ -55,7 +54,7 @@ export function* generateRoundels(type: AnnouncementType, s: number, col = 1): G
         >Effect 3.9 is now available with simplified Services. »</a
       >
     </div>
-    <Roundel {...[...generateRoundels('Video', 50)][0]} />
+    <Roundel {...[...generateAnnouncementRoundels('Video', 50)][0]} />
     <div px-6>
       <a
         href="https://effect.website/blog/effect-3.9#effectservice"
@@ -63,7 +62,7 @@ export function* generateRoundels(type: AnnouncementType, s: number, col = 1): G
         >Effect 3.9 is now available with simplified Services. »</a
       >
     </div>
-    <Roundel {...[...generateRoundels('Courses', 50)][0]} />
+    <Roundel {...[...generateAnnouncementRoundels('Courses', 50)][0]} />
     <a
       href="https://effect.website/blog/effect-3.9#effectservice"
       class="text-muted hover:underline dark:text-purple-300 font-medium"
