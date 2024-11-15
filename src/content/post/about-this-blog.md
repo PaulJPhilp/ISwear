@@ -1,14 +1,13 @@
 ---
-publishDate: 2024-01-30T00:00:00Z
-title: "About my blog, and why the name is 'I Swear It Happened Like This'"
+publishDate: 2024-11-15T00:00:00Z
+title: "Why the name 'I Swear It Happened Like This'"
 excerpt: "Building the future of software development by understanding the past."
-image: ~/assets/images/default.png
-category: "API Design"
+image: ~/assets/images/leonercohen.png
+category: "About"
 tags:
   - Paul Philp
   - Software and Web Development
   - Systems and Patterns
-  - Learing from the History of Technology and Innovation
 metadata:
   canonical: https://yourdomain.com/graphql-api-design-patterns
 ---
@@ -33,5 +32,3 @@ We are nearing the end of one paradigm shift (**reactive programming**) and the 
 When Leonard Cohen was my age (65) his business manager stole his entirewealth and he went bankrupt.  He dusted himself off and started recording the best music of his life.  He put on his fedora and toured the world multiple times. In Toronto, he gave a Springsteen-esque performance of 3.5 hours when he was in his mid-80's.
 
 The best of Leonard Cohen happened after his 65th and his bankruptcy.  I plan on the same.  Please join me.
-
-

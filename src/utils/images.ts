@@ -1,8 +1,8 @@
-import { isUnpicCompatible, unpicOptimizer, astroAsseetsOptimizer } from './images-optimization';
-import type { ImageMetadata } from 'astro';
 import type { OpenGraph } from '@astrolib/seo';
+import type { ImageMetadata } from 'astro';
+import { astroAsseetsOptimizer, isUnpicCompatible, unpicOptimizer } from './images-optimization';
 
-const load = async function () {
+const load = async () => {
   let images: Record<string, () => Promise<unknown>> | undefined = undefined;
   try {
     images = import.meta.glob('~/assets/images/**/*.{jpeg,jpg,png,tiff,webp,gif,svg,JPEG,JPG,PNG,TIFF,WEBP,GIF,SVG}');
@@ -71,7 +71,7 @@ export const adaptOpenGraphImages = async (
           };
         }
 
-        let _image;
+        let _image: unknown;
 
         if (
           typeof resolvedImage === 'string' &&
@@ -89,7 +89,7 @@ export const adaptOpenGraphImages = async (
           )[0];
         }
 
-        if (typeof _image === 'object') {
+        if (typeof _image === 'object' && _image !== null) {
           return {
             url: 'src' in _image && typeof _image.src === 'string' ? String(new URL(_image.src, astroSite)) : '',
             width: 'width' in _image && typeof _image.width === 'number' ? _image.width : undefined,

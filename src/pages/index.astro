@@ -1,9 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import Steps from '~/components/widgets/Steps.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import ISIHJLT from '../assets/images/ISIHJLT.webp';
 
 const metadata = {
   title: 'I Swear It Happened Like This',
@@ -12,53 +9,5 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-
-  <Hero
-    image={{
-      src: ISIHJLT,
-      alt: 'I Swear It Happened Like This',
-      width: 1400,
-      height: 1200,
-    }}
-  />
-
   <BlogLatestPosts title="Latest Blog Posts" information="Check out our most recent technical articles" count={5} />
-
-  <!-- Steps Widget ****************** -->
-
-  <Steps
-    title="Get to know our systems-driven perspective."
-    items={[
-      {
-        title: 'Step 1: <span class="font-medium">Patterns</span>',
-        description: "It's Patterns All the Way Down.",
-        icon: 'tabler:brain',
-      },
-      {
-        title: 'Step 2: <span class="font-medium">Systems</span>',
-        description: 'Systems: The Mother of All Design Patterns.',
-        icon: 'tabler:arrow-iteration',
-      },
-      {
-        title: 'Step 3: <span class="font-medium">Moore\'s Law</span>',
-        description: "The Unbelievable Terrible Beauty of Moore's Law.",
-        icon: 'tabler:cpu',
-      },
-      {
-        title: 'Step 4: <span class="font-medium">My Perspective</span>',
-        description: 'Stars and Scars: a 45-year perspective on Software.',
-        icon: 'tabler:binoculars',
-      },
-    ]}
-  />
-
-  <!-- HighlightedPosts Widget ******* -->
-
-  <BlogLatestPosts
-    title="Find out more content in our Blog"
-    information={`The blog is used to display AstroWind documentation.
-                      Each new article will be an important step that you will need to know to be an expert in creating a website using Astro + Tailwind CSS.
-                      Astro is a very interesting technology. Thanks.
-              `}
-  />
 </Layout>
