@@ -3,7 +3,7 @@ type BaseColor = 'black' | 'white' | 'red' | 'green' | 'blue' | 'yellow' | 'cyan
 type HexColor = `#${string}`;
 type RgbColor = `rgb(${number}, ${number}, ${number})`;
 type RgbaColor = `rgba(${number}, ${number}, ${number}, ${number})`;
-export type Color = BaseColor |HexColor | RgbColor | RgbaColor;
+export type Color = BaseColor | HexColor | RgbColor | RgbaColor;
 
 interface RoundelBorderProps {
   strokeWidth: number;
@@ -77,7 +77,12 @@ export function* generateRoundels(def: RoundelDefinition, s: number, col = 1): G
   const roundel = makeRoundel(
     size,
     { x: 100, y: 100 },
-    { label: def.label.label, fontSize: def.label.fontSize ?? '16px', fontWeight: def.label.fontWeight ?? "normal", color: def.label.color },
+    {
+      label: def.label.label,
+      fontSize: def.label.fontSize ?? '16px',
+      fontWeight: def.label.fontWeight ?? 'normal',
+      color: def.label.color,
+    },
     { center: { x: 50, y: 50 }, radius: 10, color: 'white' },
     { center: { x: 50, y: 50 }, radius: 50, color: color },
     { top: 0, left: 0, color: rectColor, width: 100, height: 100 }
@@ -108,7 +113,9 @@ export function makeRoundel(
   rect: RoundelRectangleProps,
   options?: makeRoundelOptions
 ): RoundelProps {
-  console.log(`makeRoundel: ${size} ${position.x} ${position.y} ${label.label} ${innerCircle.radius} ${outerCircle.radius} ${rect.width} ${rect.height}`);
+  console.log(
+    `makeRoundel: ${size} ${position.x} ${position.y} ${label.label} ${innerCircle.radius} ${outerCircle.radius} ${rect.width} ${rect.height}`
+  );
   const RoundelMargin = options?.margin ?? 0.25;
   const RoundelOuterCircleRatio = options?.outerCircleRatio ?? 0.8;
   const RoundelInnerCircleRatio = options?.innerCircleRatio ?? 0.6666666666;
@@ -157,7 +164,7 @@ export function makeRoundel(
     label: {
       label: label.label,
       color: label.color,
-      fontSize: calcFontSize(size * (1 + RoundelMargin), label.label),
+      fontSize: label.fontSize ?? calcFontSize(size * (1 + RoundelMargin), label.label),
       fontWeight: label.fontWeight ?? 'normal',
     },
   };
@@ -220,13 +227,13 @@ const roundel = Astro.props;
     x={roundel.rect.left + roundel.rect.width / 2}
     y={roundel.rect.top + roundel.rect.height / 2}
     text-length=`${roundel.size}px`
-    dy="0.105em"
+    dy="0.1em"
     text-anchor="middle"
     alignment-baseline="middle"
     fill={roundel.label.color}
     font-family="sans-serif"
-    font-weight={roundel.label.fontWeight}
-    font-size=`${calcFontSize(roundel.size*2 , roundel.label.label)}`
+    font-weight=`${roundel.label.fontWeight ?? 'normal'}`
+    font-size=`${roundel.label.fontSize ?? calcFontSize(roundel.size*2 , roundel.label.label)}`
   >
     {roundel.label.label}
   </text>

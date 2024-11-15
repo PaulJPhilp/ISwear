@@ -1,17 +1,22 @@
 ---
 import { SITE } from 'astrowind:config';
 import Roundel, { generateRoundels, type RoundelDefinition } from '~/components/widgets/Roundel.astro';
+import { TflColors } from '~/tflColors';
 
-const Logos: RoundelDefinition = { 
-  size: 100, height: 100, margin: 25, position: { x: 100, y: 100 },
-  label: { label: 'Paul Philp', color: 'white' }, 
-  color: '#000f9f', 
-  rectColor: '#000f9f', 
-  textColor: 'white' };
+const Logos: RoundelDefinition = {
+  size: 100,
+  height: 100,
+  margin: 25,
+  position: { x: 100, y: 100 },
+  label: { label: 'Paul Philp', color: TflColors.tflWhite },
+  color: TflColors.tflBlue,
+  rectColor: TflColors.tflBlue,
+  textColor: TflColors.tflWhite,
+};
 ---
 
 <span
-  class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-tflGreen whitespace-nowrap dark:text-white"
+  class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-tflBlue whitespace-nowrap dark:text-white"
 >
   <div class="flex flex-row flex-wrap justify-center items-center gap-6">
     <Roundel {...[...generateRoundels(Logos, 100)][0]} />

@@ -1,20 +1,27 @@
 ---
 import Roundel, { makeRoundel, type RoundelProps } from '~/components/widgets/Roundel.astro';
-import type { Color } from '~/components/widgets/Roundel.astro';
+import type { TflColor } from '~/tflColors';
+import { TflColors } from '~/tflColors';
+
 type AnnouncementType = 'News' | 'Video' | 'Courses';
 
 type AnnouncementRoundel = {
   type: AnnouncementType;
-  color: Color;
-  rectColor: Color;
-  textColor: Color;
+  color: TflColor[keyof TflColor];
+  rectColor: TflColor[keyof TflColor];
+  textColor: TflColor[keyof TflColor];
 };
 
 export function* generateAnnouncementRoundels(type: AnnouncementType, s: number, col = 1): Generator<RoundelProps> {
   const roundels: AnnouncementRoundel[] = [
-    { type: 'News', color: '#008000', rectColor: '#008000', textColor: '#ffffff' },
-    { type: 'Video', color: '#8B0000', rectColor: '#8B0000', textColor: '#ffffff' },
-    { type: 'Courses', color: '#800080', rectColor: '#800080', textColor: '#ffffff' },
+    { type: 'News', color: TflColors.tflBakerloo, rectColor: TflColors.tflBakerloo, textColor: TflColors.tflWhite },
+    { type: 'Video', color: TflColors.tflJubilee, rectColor: TflColors.tflJubilee, textColor: TflColors.tflWhite },
+    {
+      type: 'Courses',
+      color: TflColors.tflMetropolitan,
+      rectColor: TflColors.tflMetropolitan,
+      textColor: TflColors.tflWhite,
+    },
   ];
 
   const roundel = roundels.find((r) => r.type === type);
@@ -28,7 +35,7 @@ export function* generateAnnouncementRoundels(type: AnnouncementType, s: number,
   yield makeRoundel(
     size,
     { x: 0, y: 0 },
-    { label: roundel.type, fontSize: '16px', color: textColor },
+    { label: roundel.type, fontSize: '13px', fontWeight: 'bold', color: textColor },
     { center: { x: 50, y: 50 }, radius: 1, color: 'white' },
     { center: { x: 50, y: 50 }, radius: 5, color: color },
     { top: 0, left: 0, color: rectColor, width: 10, height: 10 }
@@ -41,7 +48,7 @@ export function* generateAnnouncementRoundels(type: AnnouncementType, s: number,
 ---
 
 <div
-  class="dark text-muted text-sm bg-black dark:bg-transparent dark:border-b dark:border-slate-800 dark:text-slate-400 hidden md:flex gap-1 overflow-hidden px-3 py-2 relative text-ellipsis whitespace-nowrap"
+  class="dark text-muted text-sm bg-gray-200 dark:bg-transparent dark:border-b dark:border-slate-800 dark:text-slate-400 hidden md:flex gap-1 overflow-hidden px-3 py-2 relative text-ellipsis whitespace-nowrap"
 >
   <div class="flex flex-row flex-wrap justify-center items-center gap-6">
     <div>
@@ -50,22 +57,23 @@ export function* generateAnnouncementRoundels(type: AnnouncementType, s: number,
     <div px-6>
       <a
         href="https://effect.website/blog/effect-3.9#effectservice"
-        class="text-muted hover:underline dark:text-teal-300 font-medium"
-        >Effect 3.9 is now available with simplified Services. »</a
+        class="text-muted hover:underline dark:text-tflBakerloo font-medium"
+        >Effect 3.9 is now available with simplified Services API. »</a
       >
     </div>
     <Roundel {...[...generateAnnouncementRoundels('Video', 50)][0]} />
     <div px-6>
       <a
         href="https://effect.website/blog/effect-3.9#effectservice"
-        class="text-muted hover:underline dark:text-pink-300 font-medium"
-        >Effect 3.9 is now available with simplified Services. »</a
+        class="text-muted hover:underline dark:text-tflJubilee font-medium"
+      >
+      The Intersection of Architecture and Implementation»</a
       >
     </div>
     <Roundel {...[...generateAnnouncementRoundels('Courses', 50)][0]} />
     <a
       href="https://effect.website/blog/effect-3.9#effectservice"
-      class="text-muted hover:underline dark:text-purple-300 font-medium"
+      class="text-muted hover:underline dark:text-tflMetropolitan font-medium"
       >Effect 3.9 is now available with simplified Services. »</a
     >
   </div>

@@ -3,8 +3,9 @@ import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import Announcement from '~/components/widgets/Announcement.astro';
-import { headerData } from '~/navigation';
-import { footerData } from '~/navigation';
+
+import { headerData, footerData } from '~/navigation';
+
 import type { MetaData } from '~/types';
 
 export interface Props {
@@ -12,24 +13,6 @@ export interface Props {
 }
 
 const { metadata } = Astro.props;
-
-/***
-const tubeLines = [
-  { name: 'Bakerloo', color: '#B36305', rectColor: 'orange', textColor: 'purple' },
-  { name: 'Central', color: '#E32017', rectColor: '#E32017', textColor: 'white' },
-  { name: 'Circle', color: '#FFD300', rectColor: '#FFD300', textColor: 'green' },
-  { name: 'District', color: '#00782A', rectColor: '#00782A', textColor: 'white' },
-  { name: 'Hammersmith & City', color: '#F3A9BB', rectColor: '#F3A9BB', textColor: 'darkslategray' },
-  { name: 'Jubilee', color: '#A0A5A9', rectColor: '#A0A5A9', textColor: 'white' },
-  { name: 'Metropolitan', color: '#9B0056', rectColor: '#9B0056', textColor: 'white' },
-  { name: 'Northern', color: '#000000', rectColor: '#000000', textColor: 'white' },
-  { name: 'Piccadilly', color: '#003688', rectColor: '#003688', textColor: 'white' },
-  { name: 'Victoria', color: '#0098D4', rectColor: '#0098D4', textColor: 'white' },
-  { name: 'Waterloo & City', color: '#95CDBA', rectColor: '#95CDBA', textColor: 'white' },
-  { name: 'Elizabeth', color: '#6950A1', rectColor: '#6950A1', textColor: 'white' },
-  { name: 'DLR', color: '#00A4A7', rectColor: '#00A4A7', textColor: 'white' },
-];
-***/
 ---
 
 <Layout metadata={metadata}>
@@ -39,7 +22,10 @@ const tubeLines = [
   <slot name="header">
     <Header {...headerData} isSticky showRssFeed showToggleTheme />
   </slot>
-  <Footer {...footerData}>
-    <slot name="footer" />
-  </Footer>
+  <main>
+    <slot />
+  </main>
+  <slot name="footer">
+    <Footer {...footerData} />
+  </slot>
 </Layout>
