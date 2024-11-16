@@ -44,7 +44,7 @@ export const findImage = async (
   const key = imagePath.replace('~/', '/src/');
 
   return images && typeof images[key] === 'function'
-    ? ((await images[key]()) as { default: ImageMetadata })['default']
+    ? ((await images[key]()) as { default: ImageMetadata }).default
     : null;
 };
 
