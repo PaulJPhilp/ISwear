@@ -1,8 +1,5 @@
 ---
-import { APP_BLOG } from 'astrowind:config';
-
 import Grid from '~/components/blog/Grid.astro';
-
 import { getBlogPermalink } from '~/utils/permalinks';
 import { findLatestPosts } from '~/utils/blog';
 import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
@@ -30,20 +27,19 @@ const {
   bg = await Astro.slots.render('bg'),
 } = Astro.props;
 
-const posts = APP_BLOG.isEnabled ? await findLatestPosts({ count }) : [];
----
+const posts = await findLatestPosts({ count });
 
 {
-  APP_BLOG.isEnabled ? (
+  posts.length > 0 ? (
     <WidgetWrapper id={id} isDark={isDark} containerClass={classes?.container as string} bg={bg}>
       <div class="flex flex-col lg:justify-between lg:flex-row mb-8">
         {title && (
           <div class="md:max-w-sm">
             <h2
-              class="text-3xl font-bold tracking-tight sm:text-4xl sm:leading-none group font-heading mb-2"
+              class="text-xl font-bold tracking-tight sm:text-2xl sm:leading-none group font-heading mb-2"
               set:html={title}
             />
-            {APP_BLOG.list.isEnabled && linkText && linkUrl && (
+            {linkText && linkUrl && (
               <Button variant="link" href={linkUrl}>
                 {' '}
                 {linkText} »

@@ -1,8 +1,8 @@
 {
+  "buildCommand": "npm install --legacy-peer-deps && npm run build",
+  "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
   "headers": [
     {
       "source": "/_astro/(.*)",

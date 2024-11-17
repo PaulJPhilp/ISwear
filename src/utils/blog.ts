@@ -2,7 +2,7 @@ import type { PaginateFunction } from 'astro';
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import type { Post } from '~/types';
-import { APP_BLOG } from 'astrowind:config';
+import { BLOG } from '~/site.config';
 import { cleanSlug, trimSlash, BLOG_BASE, POST_PERMALINK_PATTERN, CATEGORY_BASE, TAG_BASE } from './permalinks';
 
 const generatePermalink = async ({
@@ -100,33 +100,24 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
   };
 };
 
-const load = async function (): Promise<Array<Post>> {
-  const posts = await getCollection('post');
-  const normalizedPosts = posts.map(async (post) => await getNormalizedPost(post));
-
-  const results = (await Promise.all(normalizedPosts))
-    .sort((a, b) => b.publishDate.valueOf() - a.publishDate.valueOf())
-    .filter((post) => !post.draft);
-
-  return results;
-};
-
 let _posts: Array<Post>;
 
 /** */
-export const isBlogEnabled = APP_BLOG.isEnabled;
-export const isRelatedPostsEnabled = APP_BLOG.isRelatedPostsEnabled;
-export const isBlogListRouteEnabled = APP_BLOG.list.isEnabled;
-export const isBlogPostRouteEnabled = APP_BLOG.post.isEnabled;
-export const isBlogCategoryRouteEnabled = APP_BLOG.category.isEnabled;
-export const isBlogTagRouteEnabled = APP_BLOG.tag.isEnabled;
+export const isBlogEnabled = !BLOG.disabled;
 
-export const blogListRobots = APP_BLOG.list.robots;
-export const blogPostRobots = APP_BLOG.post.robots;
-export const blogCategoryRobots = APP_BLOG.category.robots;
-export const blogTagRobots = APP_BLOG.tag.robots;
+/** */
+export const isRelatedPostsEnabled = BLOG.isRelatedPostsEnabled;
+export const isBlogListRouteEnabled = BLOG.list.isEnabled;
+export const isBlogPostRouteEnabled = BLOG.post.isEnabled;
+export const isBlogCategoryRouteEnabled = BLOG.category.isEnabled;
+export const isBlogTagRouteEnabled = BLOG.tag.isEnabled;
 
-export const blogPostsPerPage = APP_BLOG?.postsPerPage;
+export const blogListRobots = BLOG.list.robots;
+export const blogPostRobots = BLOG.post.robots;
+export const blogCategoryRobots = BLOG.category.robots;
+export const blogTagRobots = BLOG.tag.robots;
+
+export const blogPostsPerPage = BLOG?.postsPerPage;
 
 /** */
 export const fetchPosts = async (): Promise<Array<Post>> => {
@@ -167,10 +158,20 @@ export const findPostsByIds = async (ids: Array<string>): Promise<Array<Post>> =
 
 /** */
 export const findLatestPosts = async ({ count }: { count?: number }): Promise<Array<Post>> => {
-  const _count = count || 4;
+  const _count = count || BLOG.postsPerPage;
   const posts = await fetchPosts();
 
   return posts ? posts.slice(0, _count) : [];
+};
+
+/** */
+export const load = async (): Promise<Array<Post>> => {
+  const posts = await getCollection('post');
+  const normalizedPosts = await Promise.all(posts.map((post) => getNormalizedPost(post)));
+
+  return normalizedPosts
+    .filter((post) => post.publishDate <= new Date())
+    .sort((a, b) => b.publishDate.valueOf() - a.publishDate.valueOf());
 };
 
 /** */

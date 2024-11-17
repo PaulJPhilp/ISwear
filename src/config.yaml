@@ -1,6 +1,6 @@
 site:
   name: I Swear It Happened Like This
-  site: 'https://astrowind.vercel.app'
+  site: 'https://iswear.dev'
   base: '/'
   trailingSlash: false
 

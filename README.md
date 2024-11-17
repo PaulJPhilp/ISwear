@@ -114,7 +114,6 @@ Inside **AstroWind** template, you'll see the following folders and files:
 │   │   │   └── index.astro
 │   │   ├── index.astro
 │   │   ├── 404.astro
-│   │   ├-- rss.xml.ts
 │   │   └── ...
 │   ├── utils/
 │   ├── config.yaml

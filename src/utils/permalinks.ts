@@ -1,7 +1,5 @@
 import slugify from 'limax';
-
-import { SITE, APP_BLOG } from 'astrowind:config';
-
+import { SITE, BLOG } from '~/site.config';
 import { trim } from '~/utils/utils';
 
 export const trimSlash = (s: string) => trim(trim(s, '/'));
@@ -21,78 +19,54 @@ export const cleanSlug = (text = '') =>
     .map((slug) => slugify(slug))
     .join('/');
 
-export const BLOG_BASE = cleanSlug(APP_BLOG?.list?.pathname);
-export const CATEGORY_BASE = cleanSlug(APP_BLOG?.category?.pathname);
-export const TAG_BASE = cleanSlug(APP_BLOG?.tag?.pathname) || 'tag';
+export const BLOG_BASE = cleanSlug(BLOG.list.pathname);
+export const CATEGORY_BASE = cleanSlug(BLOG.category.pathname);
+export const TAG_BASE = cleanSlug(BLOG.tag.pathname);
 
-export const POST_PERMALINK_PATTERN = trimSlash(APP_BLOG?.post?.permalink || `${BLOG_BASE}/%slug%`);
+export const POST_PERMALINK_PATTERN = trimSlash(BLOG.post.permalink || `${BLOG_BASE}/%slug%`);
 
-/** */
+/** Get the canonical URL */
 export const getCanonical = (path = ''): string | URL => {
   const url = String(new URL(path, SITE.site));
-  if (SITE.trailingSlash == false && path && url.endsWith('/')) {
-    return url.slice(0, -1);
-  } else if (SITE.trailingSlash == true && path && !url.endsWith('/')) {
+  if (SITE.trailingSlash && path && url.endsWith('/') === false) {
     return url + '/';
   }
   return url;
 };
 
-/** */
+/** Get permalink for a specific page */
 export const getPermalink = (slug = '', type = 'page'): string => {
   let permalink: string;
 
-  if (
-    slug.startsWith('https://') ||
-    slug.startsWith('http://') ||
-    slug.startsWith('://') ||
-    slug.startsWith('#') ||
-    slug.startsWith('javascript:')
-  ) {
-    return slug;
-  }
-
   switch (type) {
-    case 'home':
-      permalink = getHomePermalink();
-      break;
-
-    case 'blog':
-      permalink = getBlogPermalink();
-      break;
-
-    case 'asset':
-      permalink = getAsset(slug);
-      break;
-
     case 'category':
-      permalink = createPath(CATEGORY_BASE, trimSlash(slug));
+      permalink = createPath(CATEGORY_BASE, cleanSlug(slug));
       break;
 
     case 'tag':
-      permalink = createPath(TAG_BASE, trimSlash(slug));
+      permalink = createPath(TAG_BASE, cleanSlug(slug));
       break;
 
     case 'post':
-      permalink = createPath(trimSlash(slug));
+      permalink = createPath(POST_PERMALINK_PATTERN.replace('%slug%', cleanSlug(slug)));
       break;
 
     case 'page':
     default:
-      permalink = createPath(slug);
+      permalink = createPath(cleanSlug(slug));
       break;
   }
 
   return definitivePermalink(permalink);
 };
 
-/** */
+/** Get home permalink */
 export const getHomePermalink = (): string => getPermalink('/');
 
-/** */
+/** Get blog permalink */
 export const getBlogPermalink = (): string => getPermalink(BLOG_BASE);
 
-/** */
+/** Get asset URL */
 export const getAsset = (path: string): string =>
   '/' +
   [BASE_PATHNAME, path]
@@ -100,35 +74,26 @@ export const getAsset = (path: string): string =>
     .filter((el) => !!el)
     .join('/');
 
-/** */
-const definitivePermalink = (permalink: string): string => createPath(BASE_PATHNAME, permalink);
+/** Get definitive permalink */
+export const definitivePermalink = (permalink: string): string => createPath(BASE_PATHNAME, permalink);
 
-/** */
+/** Apply getPermalink to menu items */
 export const applyGetPermalinks = (menu: object = {}) => {
-  if (Array.isArray(menu)) {
-    return menu.map((item) => applyGetPermalinks(item));
-  } else if (typeof menu === 'object' && menu !== null) {
-    const obj = {};
-    for (const key in menu) {
-      if (key === 'href') {
-        if (typeof menu[key] === 'string') {
-          obj[key] = getPermalink(menu[key]);
-        } else if (typeof menu[key] === 'object') {
-          if (menu[key].type === 'home') {
-            obj[key] = getHomePermalink();
-          } else if (menu[key].type === 'blog') {
-            obj[key] = getBlogPermalink();
-          } else if (menu[key].type === 'asset') {
-            obj[key] = getAsset(menu[key].url);
-          } else if (menu[key].url) {
-            obj[key] = getPermalink(menu[key].url, menu[key].type);
-          }
-        }
-      } else {
-        obj[key] = applyGetPermalinks(menu[key]);
-      }
+  const newMenu = structuredClone(menu);
+
+  const applyToItem = (item: any) => {
+    if (item.href) {
+      item.href = getPermalink(item.href);
     }
-    return obj;
-  }
-  return menu;
+    if (item.link) {
+      item.link = getPermalink(item.link);
+    }
+    if (Array.isArray(item.items)) {
+      item.items.forEach(applyToItem);
+    }
+  };
+
+  Object.values(newMenu).forEach(applyToItem);
+
+  return newMenu;
 };
