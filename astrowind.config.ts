@@ -9,7 +9,7 @@ const config: Config = {
       relatedPostsCount: 3,
       post: {
         isEnabled: true,
-        permalink: '/blog/%slug%',
+        permalink: '/%slug%',
         robots: {
           index: true,
           follow: true,
@@ -17,7 +17,7 @@ const config: Config = {
       },
       list: {
         isEnabled: true,
-        pathname: 'blog',
+        pathname: 'post',
         robots: {
           index: true,
           follow: true,

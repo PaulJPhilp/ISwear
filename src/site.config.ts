@@ -1,5 +1,5 @@
 export const SITE = {
-  name: 'I Swear It Happened Like This',
+  name: 'I Swear It Happened Just Like This',
   site: 'https://paulphilp.com',
   base: '/',
   trailingSlash: false,
@@ -10,11 +10,11 @@ export const BLOG = {
   postsPerPage: 4,
   
   list: {
-    pathname: 'blog', // blog main path, you can change this to "articles" (/articles)
+    pathname: 'post', // blog main path
   },
   
   post: {
-    permalink: 'blog/%slug%', // variables: %slug%
+    permalink: '%slug%', // variables: %slug%
   },
   
   category: {

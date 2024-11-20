@@ -15,15 +15,14 @@ import RelatedPosts from '~/components/blog/RelatedPosts.astro';
 
 export const prerender = true;
 
-export const getStaticPaths = (async () => {
-  return await getStaticPathsBlogPost();
-}) satisfies GetStaticPaths;
+export const getStaticPaths = getStaticPathsBlogPost
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { post } = Astro.props as Props;
+const { post }: Props = Astro.props;
 
 const url = getCanonical(getPermalink(post.permalink, 'post'));
+console.log('URL', url);
 const image = (await findImage(post.image)) as ImageMetadata | string | undefined;
 
 const metadata = merge(

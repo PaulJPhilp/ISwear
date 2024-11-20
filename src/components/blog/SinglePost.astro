@@ -1,5 +1,5 @@
 ---
-import { Icon } from 'astro-icon';
+import { Icon } from 'astro-icon/components';
 
 import Image from '~/components/common/Image.astro';
 import PostTags from '~/components/blog/Tags.astro';
@@ -10,6 +10,7 @@ import { getFormattedDate } from '~/utils/utils';
 
 import type { Post } from '~/types';
 
+// console.log('SinglePost');
 export interface Props {
   post: Post;
   url: string | URL;

@@ -106,7 +106,7 @@ let _posts: Array<Post>;
 export const isBlogEnabled = !BLOG.disabled;
 
 /** */
-export const isRelatedPostsEnabled = BLOG.isRelatedPostsEnabled;
+export const isRelatedPostsEnabled: unknown = BLOG.isRelatedPostsEnabled;
 export const isBlogListRouteEnabled = BLOG.list.isEnabled;
 export const isBlogPostRouteEnabled = BLOG.post.isEnabled;
 export const isBlogCategoryRouteEnabled = BLOG.category.isEnabled;
@@ -186,9 +186,11 @@ export const getStaticPathsBlogList = async ({ paginate }: { paginate: PaginateF
 /** */
 export const getStaticPathsBlogPost = async () => {
   if (!isBlogEnabled || !isBlogPostRouteEnabled) return [];
-  return (await fetchPosts()).flatMap((post) => ({
+  const posts = await fetchPosts();
+  return posts.map((post) => ({
     params: {
-      blog: post.permalink,
+      blog: [''],
+      slug: post.slug,
     },
     props: { post },
   }));
@@ -258,11 +260,11 @@ export async function getRelatedPosts(originalPost: Post, maxResults: number = 4
     }
 
     if (iteratedPost.tags) {
-      iteratedPost.tags.forEach((tag) => {
+      for (const tag of iteratedPost.tags) {
         if (originalTagsSet.has(tag.slug)) {
           score += 1;
         }
-      });
+      }
     }
 
     acc.push({ post: iteratedPost, score });

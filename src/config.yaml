@@ -9,22 +9,22 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: I Swear It Happened Like This
-    template: '%s — I Swear It Happened Like This'
-  description: "\U0001F680 Description"
+    default: Paul Philp
+    template: '%s — Paul Philp'
+  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: I Swear It Happened Like This
+    site_name: I Swear It Happened Just Like This
     images:
       - url: '~/assets/images/default.png'
         width: 1200
         height: 628
     type: website
   twitter:
-    handle: '@paulphilp'
-    site: '@paulphilp'
+    handle: '@pphilp'
+    site: '@pphilp'
     cardType: summary_large_image
 
 i18n:
@@ -33,12 +33,12 @@ i18n:
 
 apps:
   blog:
-    isEnabled: true
-    postsPerPage: 6
+    isEnabled: true # If the blog will be enabled
+    postsPerPage: 6 # Number of posts per page
 
     post:
       isEnabled: true
-      permalink: '/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      permalink: '/blog/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
       robots:
         index: true
 
@@ -60,8 +60,8 @@ apps:
       robots:
         index: false
 
-    isRelatedPostsEnabled: true
-    relatedPostsCount: 4
+    isRelatedPostsEnabled: true # If a widget with related posts is to be displayed below each post
+    relatedPostsCount: 4 # Number of related posts to display
 
 analytics:
   vendors:

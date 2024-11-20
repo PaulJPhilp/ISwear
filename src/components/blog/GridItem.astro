@@ -7,14 +7,15 @@ import Image from '~/components/common/Image.astro';
 import { findImage } from '~/utils/images';
 import { getPermalink } from '~/utils/permalinks';
 
+//console.log('GridItem');
 export interface Props {
   post: Post;
 }
 
 const { post } = Astro.props;
 const image = await findImage(post.image);
-
 const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : '';
+console.log(`link: ${link}`);
 ---
 
 <article

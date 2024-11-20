@@ -1,6 +1,6 @@
 ---
 import type { ImageMetadata } from 'astro';
-import { Icon } from 'astro-icon';
+import { Icon } from 'astro-icon/components';
 import Image from '~/components/common/Image.astro';
 import PostTags from '~/components/blog/Tags.astro';
 
@@ -13,14 +13,16 @@ import { getFormattedDate } from '~/utils/utils';
 export interface Props {
   post: Post;
 }
-
+// console.log('ListItem');
 const { post } = Astro.props;
 const image = post.image as string | ImageMetadata;
-
 const link = getPermalink(post.permalink, 'post');
+---
 
 <article
-  class={`max-w-md mx-auto md:max-w-none grid gap-6 md:gap-8 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade ${image ? 'md:grid-cols-2' : ''}`}
+  class={`max-w-md mx-auto md:max-w-none grid gap-6 md:gap-8 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade ${
+    image ? 'md:grid-cols-2' : ''
+  }`}
 >
   {
     image &&
@@ -110,9 +112,7 @@ const link = getPermalink(post.permalink, 'post');
         <footer class="mt-5">
           <PostTags tags={post.tags} />
         </footer>
-      ) : (
-        <Fragment />
-      )
+      ) : null
     }
   </div>
 </article>

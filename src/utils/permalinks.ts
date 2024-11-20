@@ -1,5 +1,6 @@
 import slugify from 'limax';
 import { SITE, BLOG } from '~/site.config';
+console.log('BLOG', BLOG);
 import { trim } from '~/utils/utils';
 
 export const trimSlash = (s: string) => trim(trim(s, '/'));
@@ -8,7 +9,7 @@ const createPath = (...params: string[]) => {
     .map((el) => trimSlash(el))
     .filter((el) => !!el)
     .join('/');
-  return '/' + paths + (SITE.trailingSlash && paths ? '/' : '');
+  return `/${paths}${SITE.trailingSlash && paths ? '/' : ''}`;
 };
 
 const BASE_PATHNAME = SITE.base || '/';
@@ -22,14 +23,15 @@ export const cleanSlug = (text = '') =>
 export const BLOG_BASE = cleanSlug(BLOG.list.pathname);
 export const CATEGORY_BASE = cleanSlug(BLOG.category.pathname);
 export const TAG_BASE = cleanSlug(BLOG.tag.pathname);
-
 export const POST_PERMALINK_PATTERN = trimSlash(BLOG.post.permalink || `${BLOG_BASE}/%slug%`);
+
+console.log('POST_PERMALINK_PATTERN', POST_PERMALINK_PATTERN);
 
 /** Get the canonical URL */
 export const getCanonical = (path = ''): string | URL => {
   const url = String(new URL(path, SITE.site));
   if (SITE.trailingSlash && path && url.endsWith('/') === false) {
-    return url + '/';
+    return `${url}/`;
   }
   return url;
 };
@@ -48,7 +50,8 @@ export const getPermalink = (slug = '', type = 'page'): string => {
       break;
 
     case 'post':
-      permalink = createPath(POST_PERMALINK_PATTERN.replace('%slug%', cleanSlug(slug)));
+      const clean_slug: string = cleanSlug(slug);
+      permalink = createPath(BLOG_BASE, clean_slug);
       break;
 
     case 'page':
@@ -68,11 +71,10 @@ export const getBlogPermalink = (): string => getPermalink(BLOG_BASE);
 
 /** Get asset URL */
 export const getAsset = (path: string): string =>
-  '/' +
-  [BASE_PATHNAME, path]
+  `/${[BASE_PATHNAME, path]
     .map((el) => trimSlash(el))
     .filter((el) => !!el)
-    .join('/');
+    .join('/')}`;
 
 /** Get definitive permalink */
 export const definitivePermalink = (permalink: string): string => createPath(BASE_PATHNAME, permalink);
@@ -82,18 +84,22 @@ export const applyGetPermalinks = (menu: object = {}) => {
   const newMenu = structuredClone(menu);
 
   const applyToItem = (item: any) => {
-    if (item.href) {
+    if (item && typeof item === 'object') {
+      if (item.href) {
+        item.href = getPermalink(item.href);
+      }
       item.href = getPermalink(item.href);
-    }
-    if (item.link) {
-      item.link = getPermalink(item.link);
+
+      if (item.link) {
+        item.link = getPermalink(item.link);
+      }
     }
     if (Array.isArray(item.items)) {
       item.items.forEach(applyToItem);
     }
-  };
+  }
 
   Object.values(newMenu).forEach(applyToItem);
 
   return newMenu;
-};
+}

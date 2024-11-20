@@ -2,7 +2,8 @@
 import { twMerge } from 'tailwind-merge';
 import Image from '~/components/common/Image.astro';
 import type { ItemGrid as Props } from '~/types';
-import { Icon } from 'astro-icon';
+import { Icon } from 'astro-icon/components';
+import Button from './Button.astro';
 
 const { items = [], columns, defaultIcon = '', classes = {} } = Astro.props;
 

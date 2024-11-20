@@ -5,6 +5,8 @@ type RgbColor = `rgb(${number}, ${number}, ${number})`;
 type RgbaColor = `rgba(${number}, ${number}, ${number}, ${number})`;
 export type Color = BaseColor | HexColor | RgbColor | RgbaColor;
 
+// console.log('Roundel');
+
 interface RoundelBorderProps {
   strokeWidth: number;
   stroke: string;
@@ -70,7 +72,6 @@ export interface RoundelDefinition {
 }
 
 export function* generateRoundels(def: RoundelDefinition, s: number, col = 1): Generator<RoundelProps> {
-  console.log(`generateRoundels:`);
   const color = def.color;
   const rectColor = def.rectColor;
   const size = s * col;
@@ -91,7 +92,6 @@ export function* generateRoundels(def: RoundelDefinition, s: number, col = 1): G
 }
 
 export function calcFontSize(size: number, text: string, defaultFontSize = 16) {
-  console.log(`calcFontSize: ${size} ${text} ${defaultFontSize}`);
   if (text.length === 0) return '0px';
 
   if (defaultFontSize < 6) return '6px';
@@ -113,9 +113,6 @@ export function makeRoundel(
   rect: RoundelRectangleProps,
   options?: makeRoundelOptions
 ): RoundelProps {
-  console.log(
-    `makeRoundel: ${size} ${position.x} ${position.y} ${label.label} ${innerCircle.radius} ${outerCircle.radius} ${rect.width} ${rect.height}`
-  );
   const RoundelMargin = options?.margin ?? 0.25;
   const RoundelOuterCircleRatio = options?.outerCircleRatio ?? 0.8;
   const RoundelInnerCircleRatio = options?.innerCircleRatio ?? 0.6666666666;

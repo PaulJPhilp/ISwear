@@ -9,7 +9,7 @@ tags:
   - Software and Web Development
   - Systems and Patterns
 metadata:
-  canonical: https://iswear.dev/post/about-this-blog
+  canonical: https://iswear.dev/about-this-blog
 ---
 
 ## About This Blog: Stars and Scars

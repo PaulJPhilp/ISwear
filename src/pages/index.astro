@@ -1,13 +1,40 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import Subway from '~/components/ui/Subway.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 
 const metadata = {
   title: 'I Swear It Happened Like This',
   ignoreTitleTemplate: true,
 };
+
+interface Item {
+  title?: string;
+  description?: string;
+  icon?: string;
+}
+
+const items: Array<Item> = [
+  {
+    title: 'Moore\'s Law',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    icon: 'tabler:artboard',
+  },
+  {
+    title: 'Latency Is Destiny',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    icon: 'tabler:picture-in-picture',
+  },
+  {
+    title: 'Customizability',
+    description:
+      'Easily customizable, allowing users to adapt the design, colors, typography, and content to match their brand identity.',
+    icon: 'tabler:adjustments-horizontal',
+  },
+];
 ---
 
-<Layout metadata={metadata}>
-  <BlogLatestPosts title="Latest Blog Posts" count={5} />
+<Layout metadata={metadata} >
+<Subway items={items} />
+<BlogLatestPosts title="Latest Blog Posts" count={5} />
 </Layout>
