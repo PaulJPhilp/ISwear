@@ -1,37 +1,32 @@
 ---
-type BaseColor = 'black' | 'white' | 'red' | 'green' | 'blue' | 'yellow' | 'cyan' | 'magenta' | 'gray';
-type HexColor = `#${string}`;
-type RgbColor = `rgb(${number}, ${number}, ${number})`;
-type RgbaColor = `rgba(${number}, ${number}, ${number}, ${number})`;
-export type Color = BaseColor | HexColor | RgbColor | RgbaColor;
+import { type Color } from '~/tflColors';
+import { calcFontSize } from '~/utils/generateRoundel';
 
-// console.log('Roundel');
-
-interface RoundelBorderProps {
+export interface RoundelBorderProps {
   strokeWidth: number;
   stroke: string;
 }
 
-interface RoundelPosition {
+export interface RoundelPosition {
   x: number;
   y: number;
 }
 
-interface RoundelLabelProps {
-  label: string;
+export interface RoundelLabelProps {
+  text: string;
   color: Color;
   fontSize?: string;
   fontWeight?: string;
 }
 
-interface RoundelCircleProps {
+export interface RoundelCircleProps {
   radius: number;
   color: Color;
   center: RoundelPosition;
   border?: RoundelBorderProps;
 }
 
-interface RoundelRectangleProps {
+export interface RoundelRectangleProps {
   width: number;
   height: number;
   top: number;
@@ -40,7 +35,7 @@ interface RoundelRectangleProps {
   border?: RoundelBorderProps;
 }
 
-interface makeRoundelOptions {
+export interface makeRoundelOptions {
   margin: number | undefined;
   outerCircleRatio: number | undefined;
   innerCircleRatio: number | undefined;
@@ -71,103 +66,10 @@ export interface RoundelDefinition {
   textColor: Color;
 }
 
-export function* generateRoundels(def: RoundelDefinition, s: number, col = 1): Generator<RoundelProps> {
-  const color = def.color;
-  const rectColor = def.rectColor;
-  const size = s * col;
-  const roundel = makeRoundel(
-    size,
-    { x: 100, y: 100 },
-    {
-      label: def.label.label,
-      fontSize: def.label.fontSize ?? '16px',
-      fontWeight: def.label.fontWeight ?? 'normal',
-      color: def.label.color,
-    },
-    { center: { x: 50, y: 50 }, radius: 10, color: 'white' },
-    { center: { x: 50, y: 50 }, radius: 50, color: color },
-    { top: 0, left: 0, color: rectColor, width: 100, height: 100 }
-  );
-  return yield roundel;
-}
 
-export function calcFontSize(size: number, text: string, defaultFontSize = 16) {
-  if (text.length === 0) return '0px';
 
-  if (defaultFontSize < 6) return '6px';
 
-  const fSize = defaultFontSize;
-  const textWidth = text.length * fSize * 1.2;
-  if (textWidth > size) {
-    return calcFontSize(size, text, defaultFontSize - 1);
-  }
-  return `${fSize}px`;
-}
 
-export function makeRoundel(
-  size: number,
-  position: RoundelPosition,
-  label: RoundelLabelProps,
-  innerCircle: RoundelCircleProps,
-  outerCircle: RoundelCircleProps,
-  rect: RoundelRectangleProps,
-  options?: makeRoundelOptions
-): RoundelProps {
-  const RoundelMargin = options?.margin ?? 0.25;
-  const RoundelOuterCircleRatio = options?.outerCircleRatio ?? 0.8;
-  const RoundelInnerCircleRatio = options?.innerCircleRatio ?? 0.6666666666;
-  const RoundelRectHeightRatio = options?.rectHeightRatio ?? 0.15;
-  const X = position.x ?? 0;
-  const Y = position.y ?? 0;
-  const Height = size * (1 + RoundelMargin);
-  const Width = size * (1 + RoundelMargin);
-  const RectWidth = size;
-  const RectHeight = size * RoundelRectHeightRatio;
-
-  const outerCircleRadius = (size * RoundelOuterCircleRatio) / 2;
-  const strokeWidth = 1;
-
-  const roundel: RoundelProps = {
-    size: size,
-    position: { x: X, y: Y },
-    height: size * (1 + RoundelMargin),
-    width: size * (1 + RoundelMargin),
-    margin: size * RoundelMargin,
-
-    innerCircle: {
-      radius: outerCircleRadius * RoundelInnerCircleRatio,
-      color: innerCircle.color,
-      center: { x: X + Height / 2, y: Y + Width / 2 },
-    },
-
-    outerCircle: {
-      radius: outerCircleRadius,
-      color: outerCircle.color,
-      center: { x: X + Height / 2, y: Y + Width / 2 },
-    },
-
-    rect: {
-      width: size,
-      height: RectHeight,
-      top: Y + Height / 2 - RectHeight / 2,
-      left: X + Width / 2 - RectWidth / 2,
-      color: rect.color,
-      border: {
-        strokeWidth: strokeWidth,
-        stroke: rect.border?.stroke ?? rect.color,
-      },
-    },
-
-    label: {
-      label: label.label,
-      color: label.color,
-      fontSize: label.fontSize ?? calcFontSize(size * (1 + RoundelMargin), label.label),
-      fontWeight: label.fontWeight ?? 'normal',
-    },
-  };
-
-  return roundel;
-}
 
 export interface Props {
   size: number;
@@ -230,8 +132,8 @@ const roundel = Astro.props;
     fill={roundel.label.color}
     font-family="sans-serif"
     font-weight=`${roundel.label.fontWeight ?? 'normal'}`
-    font-size=`${roundel.label.fontSize ?? calcFontSize(roundel.size*2 , roundel.label.label)}`
+    font-size=`${roundel.label.fontSize ?? calcFontSize(roundel.size*2 , roundel.label.text)}`
   >
-    {roundel.label.label}
+    {roundel.label.text}
   </text>
 </svg>

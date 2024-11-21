@@ -1,3 +1,9 @@
+type BaseColor = 'black' | 'white' | 'red' | 'green' | 'blue' | 'yellow' | 'cyan' | 'magenta' | 'gray';
+type HexColor = `#${string}`;
+type RgbColor = `rgb(${number}, ${number}, ${number})`;
+type RgbaColor = `rgba(${number}, ${number}, ${number}, ${number})`;
+export type Color = BaseColor | HexColor | RgbColor | RgbaColor;
+
 
 export interface TflColor {
     tflBlue: '#000f9f';

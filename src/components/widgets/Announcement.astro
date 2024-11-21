@@ -1,5 +1,6 @@
 ---
-import Roundel, { makeRoundel, type RoundelProps } from '~/components/widgets/Roundel.astro';
+import Roundel, { type RoundelProps } from '~/components/widgets/Roundel.astro';
+import { makeRoundel, }  from '~/utils/generateRoundel';
 import type { TflColor } from '~/tflColors';
 import { TflColors } from '~/tflColors';
 
@@ -35,7 +36,7 @@ export function* generateAnnouncementRoundels(type: AnnouncementType, s: number,
   yield makeRoundel(
     size,
     { x: 0, y: 0 },
-    { label: roundel.type, fontSize: '13px', fontWeight: 'bold', color: textColor },
+    { text: roundel.type, fontSize: '13px', fontWeight: 'bold', color: textColor },
     { center: { x: 50, y: 50 }, radius: 1, color: 'white' },
     { center: { x: 50, y: 50 }, radius: 5, color: color },
     { top: 0, left: 0, color: rectColor, width: 10, height: 10 }

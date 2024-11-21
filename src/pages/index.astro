@@ -16,7 +16,7 @@ interface Item {
 
 const items: Array<Item> = [
   {
-    title: 'Moore\'s Law',
+    title: "Moore's Law",
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     icon: 'tabler:artboard',
   },
@@ -24,6 +24,12 @@ const items: Array<Item> = [
     title: 'Latency Is Destiny',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     icon: 'tabler:picture-in-picture',
+  },
+  {
+    title: 'The Wisdom of Deming',
+    description:
+      'Easily customizable, allowing users to adapt the design, colors, typography, and content to match their brand identity.',
+    icon: 'tabler:adjustments-horizontal',
   },
   {
     title: 'Customizability',
@@ -34,7 +40,7 @@ const items: Array<Item> = [
 ];
 ---
 
-<Layout metadata={metadata} >
-<Subway items={items} />
-<BlogLatestPosts title="Latest Blog Posts" count={5} />
+<Layout metadata={metadata}>
+  <Subway items={items} />
+  <BlogLatestPosts title="Latest Blog Posts" count={5} />
 </Layout>
