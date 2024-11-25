@@ -1,5 +1,5 @@
 ---
-import { type Color } from '~/tflColors';
+import type { Color } from '~/tflColors';
 import { calcFontSize } from '~/utils/generateRoundel';
 
 export interface RoundelBorderProps {
@@ -66,11 +66,6 @@ export interface RoundelDefinition {
   textColor: Color;
 }
 
-
-
-
-
-
 export interface Props {
   size: number;
   position: RoundelPosition;
@@ -84,56 +79,61 @@ export interface Props {
 }
 
 const roundel = Astro.props;
-
-// <div class="flex items-center justify-center h-full">
 ---
 
-<svg
-  width={`${roundel.width}`}
-  height={`${roundel.height}`}
-  viewBox={`${roundel.position.x} ${roundel.position.y} ${roundel.width} ${roundel.height}`}
-  xmlns="http://www.w3.org/2000/svg"
+<div 
+  style={`margin: ${roundel.margin ?? '0'}`}
+  class="transition-transform duration-300 ease-in-out hover:scale-110 cursor-pointer"
 >
-  <!-- Outer Circle -->
-  <circle
-    cx={roundel.outerCircle.center.x}
-    cy={roundel.outerCircle.center.y}
-    r={roundel.outerCircle.radius}
-    fill={roundel.outerCircle.color}
-    stroke={roundel.outerCircle.border?.stroke}
-    stroke-width={roundel.outerCircle.border?.strokeWidth}></circle>
-
-  <!-- Inner Circle -->
-  <circle
-    cx={roundel.innerCircle.center.x}
-    cy={roundel.innerCircle.center.y}
-    r={roundel.innerCircle.radius}
-    fill={roundel.innerCircle.color}
-    stroke={roundel.innerCircle.border?.stroke}
-    stroke-width={roundel.innerCircle.border?.strokeWidth}></circle>
-
-  <!-- Rectangle -->
-  <rect
-    x={roundel.rect.left}
-    y={roundel.rect.top}
-    width={roundel.rect.width}
-    height={roundel.rect.height}
-    fill={roundel.rect.color}
-    stroke={roundel.rect.border?.stroke}
-    stroke-width={roundel.rect.border?.strokeWidth}></rect>
-
-  <text
-    x={roundel.rect.left + roundel.rect.width / 2}
-    y={roundel.rect.top + roundel.rect.height / 2}
-    text-length=`${roundel.size}px`
-    dy="0.1em"
-    text-anchor="middle"
-    alignment-baseline="middle"
-    fill={roundel.label.color}
-    font-family="sans-serif"
-    font-weight=`${roundel.label.fontWeight ?? 'normal'}`
-    font-size=`${roundel.label.fontSize ?? calcFontSize(roundel.size*2 , roundel.label.text)}`
+  <svg
+    width={roundel.width}
+    height={roundel.height}
+    viewBox={`${roundel.position.x} ${roundel.position.y} ${roundel.width} ${roundel.height}`}
+    xmlns="http://www.w3.org/2000/svg"
+    class="transition-colors duration-300 ease-in-out"
   >
-    {roundel.label.text}
-  </text>
-</svg>
+    <circle
+      cx={roundel.outerCircle.center.x}
+      cy={roundel.outerCircle.center.y}
+      r={roundel.outerCircle.radius}
+      fill={roundel.outerCircle.color}
+      stroke={roundel.outerCircle.border?.stroke}
+      stroke-width={roundel.outerCircle.border?.strokeWidth}
+      class="transition-colors duration-300 ease-in-out hover:fill-current hover:text-blue-600"
+    />
+    <circle
+      cx={roundel.innerCircle.center.x}
+      cy={roundel.innerCircle.center.y}
+      r={roundel.innerCircle.radius}
+      fill={roundel.innerCircle.color}
+      stroke={roundel.innerCircle.border?.stroke}
+      stroke-width={roundel.innerCircle.border?.strokeWidth}
+      class="transition-colors duration-300 ease-in-out hover:fill-current hover:text-white"
+    />
+    <rect
+      x={roundel.rect.left}
+      y={roundel.rect.top}
+      width={roundel.rect.width}
+      height={roundel.rect.height}
+      fill={roundel.rect.color}
+      stroke={roundel.rect.border?.stroke}
+      stroke-width={roundel.rect.border?.strokeWidth}
+      class="transition-colors duration-300 ease-in-out hover:fill-current hover:text-blue-600"
+    />
+    <text
+      x={roundel.rect.left + roundel.rect.width / 2}
+      y={roundel.rect.top + roundel.rect.height / 2}
+      text-length={`${roundel.size}px`}
+      dy="0.1em"
+      text-anchor="middle"
+      alignment-baseline="middle"
+      fill={roundel.label.color}
+      font-family="sans-serif"
+      font-weight={`${roundel.label.fontWeight ?? 'normal'}`}
+      font-size={`${roundel.label.fontSize ?? calcFontSize(roundel.size*2 , roundel.label.text)}`}
+      class="transition-colors duration-300 ease-in-out hover:fill-current hover:text-white"
+    >
+      {roundel.label.text}
+    </text>
+  </svg>
+</div>

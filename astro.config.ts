@@ -7,6 +7,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
+import robotsTxt from 'astro-robots-txt';
 import icon from 'astro-icon';
 import compress from 'astro-compress';
 import type { AstroIntegration } from 'astro';
@@ -23,6 +24,9 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
 
 export default defineConfig({
   output: 'static',
+  site: 'https://paulphilp.com',
+  trailingSlash: 'never',
+  prefetch: true,
 
   integrations: [
     tailwind({
@@ -30,6 +34,7 @@ export default defineConfig({
     }),
     sitemap(),
     mdx(),
+    robotsTxt(),
     icon({
       include: {
         tabler: ['*'],
@@ -60,9 +65,9 @@ export default defineConfig({
           removeAttributeQuotes: false,
         },
       },
-      Image: false,
+      Image: true,
       JavaScript: true,
-      SVG: false,
+      SVG: true,
       Logger: 1,
     }),
 
@@ -73,11 +78,19 @@ export default defineConfig({
 
   image: {
     domains: ['cdn.pixabay.com'],
+    // Add reasonable image optimization defaults
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+    },
   },
 
   markdown: {
     remarkPlugins: [readingTimeRemarkPlugin],
     rehypePlugins: [responsiveTablesRehypePlugin, lazyImagesRehypePlugin],
+    shikiConfig: {
+      theme: 'github-dark',
+      wrap: true,
+    },
   },
 
   vite: {
@@ -86,5 +99,9 @@ export default defineConfig({
         '~': path.resolve(__dirname, './src'),
       },
     },
-  },
+    build: {
+      // Enable source maps for better debugging
+      sourcemap: true,
+    },
+  }
 });

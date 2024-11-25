@@ -1,24 +1,25 @@
 ---
-import { Icon } from 'astro-icon/components';
 import { twMerge } from 'tailwind-merge';
-import type { Item } from '~/types';
-import Roundel from '../widgets/Roundel.astro';
 import type { TflColor } from '~/tflColors';
 import { TflColors } from '~/tflColors';
-import type { RoundelProps } from '../widgets/Roundel.astro';
+import type { Item } from '~/types';
 import { generateRoundel, registerRoundel } from '~/utils/generateRoundel';
+import type { RoundelProps } from '../widgets/Roundel.astro';
+import Roundel from '../widgets/Roundel.astro';
 
 export interface Props {
+  title?: string;
   color?: TflColor[keyof TflColor];
   items?: Array<Item>;
-  defaultIcon?: string;
   classes?: Record<string, string>;
+  stations?: Array<Array<string>>;
 }
 
-const { color = 'primary', items = [], classes = {}, defaultIcon } = Astro.props as Props;
+const { title = 'Foundation', color = TflColors.tflDarkGrey, items = [], classes = {}, stations = [] } = Astro.props as Props;
 
 type SubwayType = 'Foundation';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type SubwayRoundel = {
   type: SubwayType;
   color: TflColor[keyof TflColor];
@@ -27,85 +28,157 @@ type SubwayRoundel = {
 };
 
 const subwayRoundel: RoundelProps = {
-  size: 100,
-  position: { x: 100, y: 100 },
-  height: 100,
-  width: 100,
+  size: 156.25,
+  position: { x: 156.25, y: 156.25 },
+  height: 156.25,
+  width: 156.25,
   margin: 25,
   innerCircle: {
-    radius: 50,
+    radius: 78.125,
     color: TflColors.tflWhite,
-    center: { x: 50, y: 50 },
+    center: { x: 78.125, y: 78.125 },
   },
   outerCircle: {
-    radius: 50,
+    radius: 78.125,
     color: TflColors.tflWhite,
-    center: { x: 50, y: 50 },
+    center: { x: 78.125, y: 78.125 },
   },
   rect: {
-    width: 100,
-    height: 100,
+    width: 156.25,
+    height: 156.25,
     top: 0,
     left: 0,
     color: TflColors.tflBlue,
     border: {
-      strokeWidth: 2,
+      strokeWidth: 2.5,
       stroke: TflColors.tflBlue,
     },
   },
-  label: { text: 'Subway', fontSize: '13px', fontWeight: 'bold', color: TflColors.tflWhite },
+  label: { text: 'Subway', fontSize: '18.75px', fontWeight: 'bold', color: TflColors.tflWhite },
 };
 
 registerRoundel('Foundation', subwayRoundel);
 
-const topics: string[] = ['Moore\'s Law', 'Latency', 'Modularity', 'Deming', 'Systems'];
+const topics: string[] = ['Moore', 'Latency', 'Modularity', 'Deming', 'Systems'];
+
+topics.map((topic) => {
+  const roundel = structuredClone(subwayRoundel);
+  roundel.size = 78.125;
+  roundel.width = 78.125;
+  roundel.height = 78.125;
+  roundel.position = { x: 78.125, y: 78.125 };
+  roundel.innerCircle.radius = 39.0625;
+  roundel.outerCircle.radius = 39.0625;
+  roundel.innerCircle.center = { x: 39.0625, y: 39.0625 };
+  roundel.outerCircle.center = { x: 39.0625, y: 39.0625 };
+  roundel.rect.width = 78.125;
+  roundel.rect.height = 78.125;
+  roundel.label.text = topic;
+  roundel.label.fontSize = '15px';
+  roundel.label.fontWeight = 'normal';
+  roundel.innerCircle.color = TflColors.tflWhite;
+  roundel.outerCircle.color = TflColors.tflBlue;
+  return registerRoundel(topic, roundel);
+});
+
 const roundels = [
-  generateRoundel("Moore's Law", 50),
-  generateRoundel('Latency', 50),
-  generateRoundel('Modularity', 50),
-  generateRoundel('Deming', 50),
-  generateRoundel('Systems', 50),
+  generateRoundel('Moore'),
+  generateRoundel('Latency'),
+  generateRoundel('Modularity'),
+  generateRoundel('Deming'),
+  generateRoundel('Systems'),
 ];
 
 roundels.map((roundel, r) => registerRoundel(topics[r], roundel));
 
-const {
-  container: containerClass = '',
-  panel: panelClass = '',
-  title: titleClass = '',
-  description: descriptionClass = '',
-  icon: defaultIconClass = 'text-primary dark:text-slate-200 border-primary dark:border-blue-700',
-} = classes;
+const { container: containerClass = '', panel: panelClass = '', title: titleClass = '' } = classes;
 ---
 
-{
-  items && items.length && (
-    <div class={containerClass}>
-      {items.map(({ title, description, icon, classes: itemClasses = {} }, index = 0) => (
-        <div
-          class={twMerge(
-            'flex intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade',
-            panelClass,
-            itemClasses?.panel
-          )}
-        >
-          <div class="flex flex-col items-center mr-4 rtl:mr-0 rtl:ml-4">
-            <div>
-              <div class="flex items-center justify-center">{<Roundel {...roundels[index]} />}</div>
-            </div>
-            {index !== items.length - 1 && <div class="w-px h-full bg-black/10 dark:bg-slate-400/50" />}
-          </div>
-          <div class={`pt-1 ${index !== items.length - 1 ? 'pb-8' : ''}`}>
-            {title && <p class={twMerge('text-xl font-bold', titleClass, itemClasses?.title)} set:html={title} />}
-            {description && (
-              <p
-                class={twMerge('text-muted mt-2', descriptionClass, itemClasses?.description)}
-                set:html={description}
+<div class={twMerge('subway-timeline flex flex-col items-center', containerClass)}>
+  {/* Timeline header with title */}
+  {title && <h1 class={twMerge(
+    'text-2xl font-bold mb-8 text-center cursor-pointer',
+    'transition-all duration-300 ease-in-out hover:scale-110 hover:text-blue-500',
+    titleClass,
+    `text-${color}`
+  )}>{title}</h1>}
+
+  {/* Timeline container */}
+  <div class="relative w-full max-w-[500px] px-32">
+    {
+      [...items, null].map((item, index) => {
+        const isLastSegment = index === items.length;
+        const isFirstSegment = index === 0;
+        const currentStations = stations[index] || [];
+        const isOddSegment = index % 2 === 1;
+
+        return (
+          <div
+            class={twMerge('relative flex flex-col', !isLastSegment && 'mb-[5px]', panelClass, item?.classes?.panel)}
+          >
+            {/* Line segment with stations */}
+            <div class="relative h-[172.5px] w-full">
+              {/* Vertical line - adjusted to start/end at roundels */}
+              <div
+                class={twMerge(
+                  'absolute left-1/2 -translate-x-1/2 w-[5px]',
+                  'bg-slate-700',
+                  isOddSegment ? 'top-[39px]' : 'top-0',
+                  isFirstSegment ? 'top-0' : 'top-0',
+                  isLastSegment ? 'bottom-0' : 'bottom-[-39px]'
+                )}
               />
-            )}
+
+              {/* Station markers - only render if there are stations */}
+              {currentStations.length > 0 &&
+                (() => {
+                  // Filter valid stations and get their indices
+                  const validStations = currentStations
+                    .map((station, index) => ({ station, index }))
+                    .filter(({ station }) => station);
+
+                  // Calculate spacing based on number of valid stations
+                  const position = 100 / (validStations.length + 1);
+
+                  return validStations.map(({ station }, validIndex) => {
+                    const offset = position * (validIndex + 1);
+
+                    return (
+                      <div class="relative w-full group" style={`top: ${offset}%`}>
+                        {/* Hash mark container */}
+                        <div class="relative h-[3px]">
+                          {/* Hash mark */}
+                          <div
+                            class={twMerge(
+                              'absolute left-1/2 w-[9px] h-full -translate-x-1/2 bg-slate-700',
+                              'transition-all duration-300 ease-in-out group-hover:w-[15px] group-hover:bg-blue-500'
+                            )}
+                          />
+                          {/* Station label */}
+                          <div class={twMerge(
+                            'absolute right-[50%] mr-2 top-1/2 -translate-y-1/2 text-xs text-purple-600 whitespace-nowrap text-right',
+                            'transition-all duration-300 ease-in-out group-hover:text-blue-500 group-hover:font-semibold group-hover:-translate-x-2'
+                          )}>
+                            {station}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  });
+                })()}
+            </div>
+
+            {/* Roundel at the end of segment (except for last segment) */}
+            {!isLastSegment && (
+              <div
+                class="relative flex flex-col items-center pt-9"
+              >
+                <Roundel {...roundels[index]} />
+              </div>
+            )}  
           </div>
-        </div>
-      ))}
-    </div>
-  )
-}
+        );
+      })
+    }
+  </div>
+</div>

@@ -31,19 +31,16 @@ export function getRoundel(type: string): RoundelProps {
     return roundel;
 }
 
-export function generateRoundel(type: string, size: number, roundel?: RoundelProps): RoundelProps {
-    console.log(`generateRoundel: ${type} ${size} ${roundel}`);
+export function generateRoundel(type: string): RoundelProps {
+    console.log(`generateRoundel: ${type} `);
 
-    if (!roundel) {
-        roundel = roundelMap.get(type);
-        if (!roundel) throw new Error(`Unknown type: ${type}`);
-    }
+    const roundel = roundelMap.get(type);
     if (!roundel) throw new Error(`Unknown type: ${type}`);
 
     return makeRoundel(
-        size,
+        roundel.size,
         { x: roundel.position.x, y: roundel.position.y },
-        { text: roundel.label.text, fontSize: roundel.label.fontSize ?? '10px', fontWeight: roundel.label.fontWeight ?? 'bold', color: roundel.label.color ?? TflColors.tflWhite },
+        { text: roundel.label.text, fontSize: roundel.label.fontSize ?? '10px', fontWeight: roundel.label.fontWeight ?? 'normal', color: roundel.label.color ?? TflColors.tflWhite },
         { center: { x: roundel.innerCircle.center.x, y: roundel.innerCircle.center.y }, radius: roundel.innerCircle.radius, color: roundel.innerCircle.color ?? TflColors.tflWhite },
         { center: { x: roundel.outerCircle.center.x, y: roundel.outerCircle.center.x }, radius: roundel.outerCircle.radius, color: roundel.outerCircle.color ?? TflColors.tflWhite },
         { top: roundel.rect.top, left: 0, color: roundel.rect.color, width: roundel.rect.width, height: roundel.rect.height }

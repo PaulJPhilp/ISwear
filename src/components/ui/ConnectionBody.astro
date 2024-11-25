@@ -1,0 +1,34 @@
+---
+import { twMerge } from 'tailwind-merge';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  classes?: {
+    title?: string;
+    description?: string;
+    container?: string;
+  };
+}
+
+const { 
+  title, 
+  description, 
+  classes = {} 
+} = Astro.props as Props;
+
+const {
+  title: titleClass = '',
+  description: descriptionClass = '',
+  container: containerClass = '',
+} = classes;
+---
+
+<div class={twMerge('flex flex-col ml-4', containerClass)}>
+  {title && 
+    <h2 class={twMerge('text-xl font-bold', titleClass)} set:html={title} />
+  }
+  {description && 
+    <p class={twMerge('text-muted mt-2', descriptionClass)} set:html={description} />
+  }
+</div>

@@ -1,7 +1,7 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
 import Subway from '~/components/ui/Subway.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+import Layout from '~/layouts/PageLayout.astro';
 
 const metadata = {
   title: 'I Swear It Happened Like This',
@@ -11,36 +11,46 @@ const metadata = {
 interface Item {
   title?: string;
   description?: string;
-  icon?: string;
 }
-
 const items: Array<Item> = [
   {
     title: "Moore's Law",
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: 'tabler:artboard',
+    description:
+      'Computing power doubles every two years, while costs halve - the relentless force driving the software economy.',
   },
   {
     title: 'Latency Is Destiny',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: 'tabler:picture-in-picture',
+    description: 'The speed of light sets the ultimate limits - in a digital world, distance still shapes destiny.',
   },
   {
     title: 'The Wisdom of Deming',
     description:
-      'Easily customizable, allowing users to adapt the design, colors, typography, and content to match their brand identity.',
-    icon: 'tabler:adjustments-horizontal',
+      'Measure to improve, not to blame - the revolutionary insight that transformed Japanese industry and Silicon Valley culture.',
   },
   {
-    title: 'Customizability',
+    title: 'The Law of Increasing Modularity',
     description:
-      'Easily customizable, allowing users to adapt the design, colors, typography, and content to match their brand identity.',
-    icon: 'tabler:adjustments-horizontal',
+      'As interfaces standardize, leaders fragment - the invisible force that evolves complex technologies into modular ecosystems.',
+  },
+  {   
+    title: 'It’s Systems All the Way Down',
+    description:
+      'Everything is connected - feedback loops shapes all complex behavior.',
   },
 ];
+
+const stations: Array<Array<string>> = [
+  ["Shannon's Law"],      // Before Moore's Law
+  ["Metcalfe's Law"],  // Before Latency
+  ["Amdahl's Law", "Brooks Law", "Conway's Law"],   // Before Deming
+  ['Lean','Agile'],  // Before Modularity
+  [''],   // Before Systems
+  [''],   // After Systems
+];
+
 ---
 
 <Layout metadata={metadata}>
-  <Subway items={items} />
+  <Subway items={items} stations={stations} />
   <BlogLatestPosts title="Latest Blog Posts" count={5} />
 </Layout>
