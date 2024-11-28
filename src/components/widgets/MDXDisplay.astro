@@ -1,0 +1,13 @@
+---
+import MDXRenderer from './MDXRenderer';
+
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+---
+
+<div class="p-8 max-w-[65ch] mx-auto bg-white rounded-lg shadow-md">
+  <MDXRenderer client:load content={content} />
+</div>

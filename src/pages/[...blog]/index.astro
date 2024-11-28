@@ -1,5 +1,5 @@
 ---
-import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
+import type { InferGetStaticPropsType } from 'astro';
 
 import merge from 'lodash.merge';
 import type { ImageMetadata } from 'astro';
@@ -22,7 +22,6 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { post }: Props = Astro.props;
 
 const url = getCanonical(getPermalink(post.permalink, 'post'));
-console.log('URL', url);
 const image = (await findImage(post.image)) as ImageMetadata | string | undefined;
 
 const metadata = merge(

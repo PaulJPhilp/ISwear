@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  snippet: CollectionEntry<'snippets'>;
+}
+
+const { snippet } = Astro.props;
+const { Content } = await snippet.render();
+---
+
+<article class="prose prose-invert max-w-none">
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">{snippet.data.title}</h1>
+    { snippet.data.description && <p class="text-gray-400">{snippet.data.description}</p>}
+    <div class="flex gap-4 text-sm text-gray-500 mt-4">
+      {
+        snippet.data.publishDate && (
+          <time datetime={snippet.data.publishDate.toISOString()}>{snippet.data.publishDate.toLocaleDateString()}</time>
+        )
+      }
+      {snippet.data.author && <span>By {snippet.data.author}</span>}
+    </div>
+  </div>
+  <Content />
+</article>

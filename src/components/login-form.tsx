@@ -56,6 +56,7 @@ export function LoginForm() {
         </div>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
+          {/* biome-ignore lint/a11y/useValidAnchor: <explanation> */}
           <a href="#" className="underline">
             Sign up
           </a>

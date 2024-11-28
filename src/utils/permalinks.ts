@@ -1,6 +1,5 @@
 import slugify from 'limax';
 import { SITE, BLOG } from '~/site.config';
-console.log('BLOG', BLOG);
 import { trim } from '~/utils/utils';
 
 export const trimSlash = (s: string) => trim(trim(s, '/'));
@@ -25,8 +24,6 @@ export const CATEGORY_BASE = cleanSlug(BLOG.category.pathname);
 export const TAG_BASE = cleanSlug(BLOG.tag.pathname);
 export const POST_PERMALINK_PATTERN = trimSlash(BLOG.post.permalink || `${BLOG_BASE}/%slug%`);
 
-console.log('POST_PERMALINK_PATTERN', POST_PERMALINK_PATTERN);
-
 /** Get the canonical URL */
 export const getCanonical = (path = ''): string | URL => {
   const url = String(new URL(path, SITE.site));
@@ -49,12 +46,12 @@ export const getPermalink = (slug = '', type = 'page'): string => {
       permalink = createPath(TAG_BASE, cleanSlug(slug));
       break;
 
-    case 'post':
-      const clean_slug: string = cleanSlug(slug);
+    case 'post': {
+      const clean_slug: string = cleanSlug(slug) || '';
       permalink = createPath(BLOG_BASE, clean_slug);
       break;
+    }
 
-    case 'page':
     default:
       permalink = createPath(cleanSlug(slug));
       break;
@@ -83,13 +80,11 @@ export const definitivePermalink = (permalink: string): string => createPath(BAS
 export const applyGetPermalinks = (menu: object = {}) => {
   const newMenu = structuredClone(menu);
 
-  const applyToItem = (item: any) => {
+    const applyToItem = (item: { href?: string; link?: string; items?: unknown[] }) => {
     if (item && typeof item === 'object') {
       if (item.href) {
         item.href = getPermalink(item.href);
       }
-      item.href = getPermalink(item.href);
-
       if (item.link) {
         item.link = getPermalink(item.link);
       }

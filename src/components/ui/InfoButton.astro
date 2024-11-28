@@ -1,0 +1,38 @@
+---
+interface Props {
+  title: string;
+  content: string;
+}
+
+const { title, content } = Astro.props;
+---
+
+<div class="relative group">
+  <button class="p-2 rounded-full hover:bg-gray-700/50 transition-colors" aria-label="Show more information">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M12 16v-4"></path>
+      <path d="M12 8h.01"></path>
+    </svg>
+  </button>
+
+  <div
+    class="absolute right-0 top-full mt-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+  >
+    <div class="bg-gray-800 text-white p-4 rounded-lg shadow-lg text-sm">
+      <h3 class="font-semibold mb-2">{title}</h3>
+      <p class="text-gray-300">{content}</p>
+    </div>
+  </div>
+</div>

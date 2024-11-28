@@ -21,7 +21,6 @@ export type RoundelMap = Map<string, RoundelProps>;
 const roundelMap: RoundelMap = new Map([]);
 
 export function registerRoundel(type: string, roundel: RoundelProps) {
-    console.log(`registerRoundel: ${type}`);
     roundelMap.set(type, roundel);
 }
 
@@ -32,7 +31,6 @@ export function getRoundel(type: string): RoundelProps {
 }
 
 export function generateRoundel(type: string): RoundelProps {
-    console.log(`generateRoundel: ${type} `);
 
     const roundel = roundelMap.get(type);
     if (!roundel) throw new Error(`Unknown type: ${type}`);

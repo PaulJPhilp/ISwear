@@ -5,6 +5,7 @@ import { defineConfig } from 'astro/config';
 
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
+import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 import type { AstroIntegration } from 'astro';
@@ -16,19 +17,22 @@ import astrowind from './vendor/integration';
 
 import { lazyImagesRehypePlugin, readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname: string = path.dirname(fileURLToPath(import.meta.url));
 
 const hasExternalScripts = false;
 const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
-  output: 'static',
+  output: 'hybrid',
   site: 'https://paulphilp.com',
   trailingSlash: 'never',
   prefetch: true,
 
   integrations: [
+    react({
+      experimentalReactChildren: true,
+    }),
     tailwind({
       applyBaseStyles: false,
     }),

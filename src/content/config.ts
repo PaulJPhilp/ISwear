@@ -63,6 +63,17 @@ const postCollection = defineCollection({
   }),
 });
 
+const snippetsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    publishDate: z.date().optional(),
+    author: z.string().optional(),
+  }),
+});
+
 export const collections = {
-  post: postCollection,
+  posts: postCollection,
+  snippets: snippetsCollection,
 };
