@@ -1,0 +1,35 @@
+---
+interface Props {
+  title?: string;
+  theme?: string;
+  titleClass?: string;
+}
+
+const { title, titleClass } = Astro.props;
+
+import { twMerge } from "tailwind-merge";
+---
+
+<style>
+  .subway-title {
+    color: var(--station-text-color);
+  }
+  
+  .subway-title:hover {
+    color: var(--station-hover-color);
+  }
+</style>
+
+{
+  title && (
+    <h1
+      class={twMerge(
+        'subway-title text-2xl font-bold mb-8 text-center cursor-pointer',
+        'transition-all duration-300 ease-in-out hover:scale-110',
+        titleClass
+      )}
+    >
+      {title}
+    </h1>
+  )
+}

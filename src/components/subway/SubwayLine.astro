@@ -1,0 +1,21 @@
+---
+interface Props {
+  isOddSegment?: boolean;
+  isFirstSegment?: boolean;
+  isLastSegment?: boolean;
+}
+
+const { isOddSegment, isFirstSegment, isLastSegment } = Astro.props;
+
+import { twMerge } from 'tailwind-merge';
+---
+
+<div
+  class={twMerge(
+    'absolute left-1/2 -translate-x-1/2 w-[5px]',
+    'bg-slate-700',
+    isOddSegment ? 'top-[39px]' : 'top-0',
+    isFirstSegment ? 'top-0' : 'top-0',
+    isLastSegment ? 'bottom-0' : 'bottom-[-39px]'
+  )}
+/>

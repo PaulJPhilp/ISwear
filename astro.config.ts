@@ -12,6 +12,7 @@ import type { AstroIntegration } from 'astro';
 import compress from 'astro-compress';
 import icon from 'astro-icon';
 import robotsTxt from 'astro-robots-txt';
+import node from '@astrojs/node';
 
 import astrowind from './vendor/integration';
 
@@ -25,11 +26,29 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
 
 export default defineConfig({
   output: 'hybrid',
+  adapter: node({
+    mode: 'standalone'
+  }),
   site: 'https://paulphilp.com',
   trailingSlash: 'never',
   prefetch: true,
 
+  // Content Collections Config
+  content: {
+    collections: {
+      stations: {
+        type: 'content',
+        entryType: 'mdx'
+      }
+    }
+  },
+
   integrations: [
+    mdx({
+      syntaxHighlight: 'shiki',
+      shikiConfig: { theme: 'github-dark' },
+      gfm: true,
+    }),
     react({
       experimentalReactChildren: true,
     }),
@@ -37,7 +56,6 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     sitemap(),
-    mdx(),
     robotsTxt(),
     icon({
       include: {

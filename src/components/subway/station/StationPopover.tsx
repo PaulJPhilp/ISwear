@@ -1,10 +1,10 @@
-import { cn } from "@/lib/utils";
+import { cn } from "~/utils/utils";
 import * as React from "react";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "../ui/popover";
+} from "../../ui/popover";
 
 interface StationPopoverProps {
     name: string;
@@ -30,19 +30,24 @@ export function StationPopover({ name, content, triggerClassName }: StationPopov
                 <button
                     type="button"
                     aria-label={`View information for ${name} station`}
-                    className={cn(
-                        "cursor-pointer hover:underline",
-                        triggerClassName
-                    )}
+                    className={cn("station-name", triggerClassName)}
                     onClick={handleClick}
                 >
                     {name}
                 </button>
             </PopoverTrigger>
-            <PopoverContent className="z-[100] w-[500px] dark" side="right">
-                <div className="p-4">
-                    <h4 className="text-sm font-semibold text-orange-500">{name}</h4>
-                    <div className="mt-2 text-sm text-gray-900">{content}</div>
+            <PopoverContent 
+                className="station-popover w-[330px] max-h-[400px] overflow-y-auto" 
+                side="right" 
+                sideOffset={64}
+                align="center"
+            >
+                <div>
+                    <div 
+                        className="content prose prose-sm"
+                        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                        dangerouslySetInnerHTML={{ __html: content }}
+                    />
                 </div>
             </PopoverContent>
         </Popover>

@@ -73,7 +73,14 @@ const snippetsCollection = defineCollection({
   }),
 });
 
+const stationsCollection = defineCollection({
+  schema: z.object({
+    title: z.string(),
+  }),
+});
+
 export const collections = {
   posts: postCollection,
   snippets: snippetsCollection,
+  stations: stationsCollection,
 };

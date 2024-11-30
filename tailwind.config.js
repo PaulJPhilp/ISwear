@@ -107,6 +107,29 @@ export default {
   },
   plugins: [
     typographyPlugin,
+    plugin(({ addComponents }) => {
+      addComponents({
+        '.station-name': {
+          '@apply text-sm font-semibold': {},
+          '@apply transition-all duration-300 ease-in-out': {},
+          '@apply hover:scale-125 hover:-translate-x-6 hover:font-semibold': {},
+          color: 'var(--station-text-color, #007229)',
+          '&:hover': {
+            color: 'var(--station-hover-color, #0d6b2d)'
+          }
+        },
+        '.station-popover': {
+          '@apply z-[100] w-[500px] p-4 dark': {},
+          '& h4': {
+            '@apply text-sm font-semibold': {},
+            color: 'var(--station-text-color, #007229)'
+          },
+          '& .content': {
+            '@apply mt-2 text-sm text-gray-900': {}
+          }
+        }
+      })
+    }),
     plugin(({ addVariant }) => {
       addVariant('intersect', '&:not([no-intersect])');
     }),

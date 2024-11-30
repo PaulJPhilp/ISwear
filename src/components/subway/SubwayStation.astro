@@ -1,0 +1,59 @@
+---
+interface Props {
+  title: string;
+  themeClass?: string;
+  debug?: boolean;
+}
+
+const { title, themeClass = '', debug = false } = Astro.props;
+
+import { twMerge } from 'tailwind-merge';
+import { StationName } from './station/StationName';
+
+const debugBorder = debug ? 'border-2 border-dashed' : '';
+const debugColors = {
+  container: debug ? 'border-blue-100' : '',
+  name: debug ? 'border-green-500' : '',
+  marker: debug ? 'border-red-100' : '',
+  hashmark: debug ? 'border-yellow-100' : '',
+};
+---
+
+<div
+  class={twMerge(
+    'w-full grid grid-cols-[minmax(0,1fr),3rem,minmax(0,1fr)] gap-2 items-center',
+    debugBorder,
+    debugColors.container
+  )}
+>
+  {/* Station Name */}
+  <div class={twMerge('w-full', debugBorder, debugColors.name)}>
+    <div class="-ml-[20px] text-sm">
+      <StationName name={title} client:load />
+    </div>
+  </div>
+
+  {/* Station Marker */}
+  <div
+    class={twMerge(
+      'subway-station h-3 w-3 mx-auto rounded-full group z-10 relative',
+      themeClass
+    )}
+  >
+    <div
+      class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[15px] h-[1px]"
+      style="background-color: #5A5A5A"
+    >
+    </div>
+  </div>
+</div>
+
+<style>
+  .subway-station {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .subway-station:hover {
+    transform: scale(1.2);
+  }
+</style>

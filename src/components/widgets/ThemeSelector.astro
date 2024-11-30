@@ -1,0 +1,73 @@
+---
+interface Props {
+  currentTheme?: string;
+}
+
+const { currentTheme = 'default' } = Astro.props;
+
+const themes = [
+  { id: 'default', name: 'Blue' },
+  { id: 'red', name: 'Red' },
+  { id: 'yellow', name: 'Yellow' },
+  { id: 'green', name: 'Green' },
+  { id: 'grey', name: 'Grey' },
+  { id: 'darkgrey', name: 'Dark Grey' }
+];
+---
+
+<div class="theme-selector mb-4 flex justify-center gap-2">
+  {themes.map(theme => (
+    <button
+      class:list={[
+        'px-3 py-1 rounded transition-all duration-300 ease-in-out',
+        'hover:scale-110',
+        {
+          'ring-2 ring-offset-2': currentTheme === theme.id,
+          [`station-theme-${theme.id}`]: true
+        }
+      ]}
+      style={`
+        background-color: var(--station-text-color);
+        color: white;
+        border: none;
+      `}
+      data-theme={theme.id}
+      onclick={`switchTheme('${theme.id}')`}
+    >
+      {theme.name}
+    </button>
+  ))}
+</div>
+
+<script is:inline define:vars={{ themes }}>
+  // Define the function globally
+  window.switchTheme = function(newTheme) {
+    console.log('Switching to theme:', newTheme);
+    
+    const subway = document.querySelector('[data-subway]');
+    if (!subway) {
+      console.error('Subway element not found');
+      return;
+    }
+
+    // Remove all theme classes
+    themes.forEach(theme => {
+      subway.classList.remove(`station-theme-${theme.id}`);
+    });
+
+    // Add new theme class
+    subway.classList.add(`station-theme-${newTheme}`);
+    console.log('New classes:', subway.classList.toString());
+
+    // Update button states
+    document.querySelectorAll('.theme-selector button').forEach(btn => {
+      btn.classList.remove('ring-2', 'ring-offset-2');
+      if (btn.getAttribute('data-theme') === newTheme) {
+        btn.classList.add('ring-2', 'ring-offset-2');
+      }
+    });
+  }
+
+  // Initialize with default theme
+  console.log('Theme selector initialized');
+</script>

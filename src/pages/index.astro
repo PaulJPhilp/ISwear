@@ -1,11 +1,11 @@
 ---
+import Layout from '~/layouts/PageLayout.astro';
 import Subway from '~/components/subway/Subway.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import Layout from '~/layouts/PageLayout.astro';
+import type { RoundelProps } from '~/components/widgets/Roundel.astro';
+import type { StationProps } from '~/types/station';
 import { TflColors } from '~/tflColors';
 import { generateRoundel, registerRoundel } from '~/utils/generateRoundel';
-import type { Props as SubwayProps } from '~/components/subway/Subway.astro';
-import type { RoundelProps } from '~/components/widgets/Roundel.astro';
 
 const metadata = {
   title: 'I Swear It Happened Like This',
@@ -58,7 +58,7 @@ function buildRoundel(topic: string): RoundelProps {
   return generateRoundel(topic);
 }
 
-const AllStations: SubwayProps = {
+const AllStations: { title: string; stations: StationProps[] } = {
   title: 'Foundation',
   stations: [
     {
@@ -66,14 +66,44 @@ const AllStations: SubwayProps = {
       title: "Moore's Law",
       description:
         'Computing power doubles every two years, while costs halve - the relentless force driving the software economy.',
-      stations: ["Shannon's Law"],
+      stations: [
+        {
+          topic: "Shannon's Law",
+          title: "Shannon's Law",
+          description: 'The mathematical limits of information transmission.',
+          stations: [],
+          roundel: buildRoundel("Shannon's Law"),
+        },
+      ],
       roundel: buildRoundel('Moore'),
     },
     {
       topic: 'Latency',
       title: 'Latency Is Destiny',
       description: 'The speed of light sets the ultimate limits - in a digital world, distance still shapes destiny.',
-      stations: ["Amdahl's Law", "Brooker's Law", "Conway's Law"],
+      stations: [
+        {
+          topic: "Amdahl's Law",
+          title: "Amdahl's Law",
+          description: 'The limits of parallel processing.',
+          stations: [],
+          roundel: buildRoundel("Amdahl's Law"),
+        },
+        {
+          topic: "Brooker's Law",
+          title: "Brooker's Law",
+          description: 'Adding more people to a late project makes it later.',
+          stations: [],
+          roundel: buildRoundel("Brooker's Law"),
+        },
+        {
+          topic: "Conway's Law",
+          title: "Conway's Law",
+          description: 'Organizations design systems that mirror their communication structures.',
+          stations: [],
+          roundel: buildRoundel("Conway's Law"),
+        },
+      ],
       roundel: buildRoundel('Latency'),
     },
     {
@@ -81,7 +111,22 @@ const AllStations: SubwayProps = {
       title: 'The Wisdom of Deming',
       description:
         'Measure to improve, not to blame - the revolutionary insight that transformed Japanese industry and Silicon Valley culture.',
-      stations: ['Lean', 'Agile'],
+      stations: [
+        {
+          topic: 'Lean',
+          title: 'Lean',
+          description: 'Eliminate waste, optimize flow.',
+          stations: [],
+          roundel: buildRoundel('Lean'),
+        },
+        {
+          topic: 'Agile',
+          title: 'Agile',
+          description: 'Iterate, adapt, deliver.',
+          stations: [],
+          roundel: buildRoundel('Agile'),
+        },
+      ],
       roundel: buildRoundel('Deming'),
     },
     {
@@ -89,24 +134,44 @@ const AllStations: SubwayProps = {
       title: 'The Law of Increasing Modularity',
       description:
         'As interfaces standardize, leaders fragment - the invisible force that evolves complex technologies into modular ecosystems.',
-      stations: ['Law of Increasing Modularity', 'Mind the Chasm'],
+      stations: [
+        {
+          topic: 'Law of Increasing Modularity',
+          title: 'Law of Increasing Modularity',
+          description: 'As interfaces standardize, leaders fragment.',
+          stations: [],
+          roundel: buildRoundel('Law of Increasing Modularity'),
+        },
+        {
+          topic: 'Mind the Chasm',
+          title: 'Mind the Chasm',
+          description: 'Crossing the chasm between early adopters and the mainstream.',
+          stations: [],
+          roundel: buildRoundel('Mind the Chasm'),
+        },
+      ],
       roundel: buildRoundel('Modularity'),
     },
     {
       topic: 'Systems',
       title: "It's Systems All the Way Down",
       description: 'Everything is connected - feedback loops shapes all complex behavior.',
-      stations: [],
+      stations: [
+        {
+          topic: 'McLuhan',
+          title: 'The Medium is the Message',
+          description: 'How we communicate shapes what we say - Twitter makes us brief, books make us deep, TikTok makes us visual.',
+          stations: [],
+          roundel: buildRoundel('McLuhan'),
+        },
+      ],
       roundel: buildRoundel('Systems'),
     },
-  ] as const,
+  ],
 };
-
-console.log(AllStations.title);
-console.log(AllStations.stations.length);
 ---
 
 <Layout metadata={metadata}>
-  <Subway title={AllStations.title} stations={AllStations.stations} />
+  <Subway stations={AllStations.stations} title={AllStations.title} />
   <BlogLatestPosts title="Latest Blog Posts" count={5} />
 </Layout>

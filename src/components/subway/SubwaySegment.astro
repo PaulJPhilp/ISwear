@@ -1,0 +1,94 @@
+---
+import { twMerge } from 'tailwind-merge';
+import type { StationProps } from '~/types/station';
+import Roundel from '../widgets/Roundel.astro';
+import SubwayLine from './SubwayLine.astro';
+import SubwayStation from './SubwayStation.astro';
+
+interface Props {
+  station: StationProps;
+  isLastSegment: boolean;
+  isFirstSegment: boolean;
+  isOddSegment: boolean;
+  themeClass: string;
+  panelClass?: string;
+  debug?: boolean;
+  debugStations?: boolean;
+  debugSegmentLayout?: boolean;
+}
+
+const {
+  station,
+  isLastSegment,
+  isFirstSegment,
+  isOddSegment,
+  themeClass,
+  panelClass = '',
+  debugStations = true,
+  debugSegmentLayout = false,
+} = Astro.props;
+
+const stations = station?.stations ?? [];
+const debugBorder = debugSegmentLayout ? 'border-2 border-dashed' : '';
+const debugColors = {
+  container: debugSegmentLayout ? 'border-purple-500' : '',
+  stationsWrapper: debugSegmentLayout ? 'border-blue-500' : '',
+  roundel: debugSegmentLayout ? 'border-pink-500' : '',
+};
+---
+
+{
+  debugStations && (
+    <div class="debug-stations text-xs text-gray-500 p-2 bg-gray-100 rounded">
+      <p>Debug Stations Information:</p>
+      <ul>
+        {stations.map((s, index) => (
+          <li>
+            Station {index + 1}: {s.title}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+<div class={twMerge('relative', !isLastSegment && 'mb-[5px]', panelClass, debugBorder, debugColors.container)}>
+  <div class="relative h-[172.5px] w-full">
+    <SubwayLine {isOddSegment} {isFirstSegment} {isLastSegment} />
+
+    {
+      stations && stations.length > 0 && (
+        <div class={twMerge('h-full relative', debugBorder, debugColors.stationsWrapper)}>
+          {stations.map((subStation, index) => {
+            const totalStations = stations.length;
+            const positionPercentage = totalStations > 1 
+              ? (10 + (index / (totalStations - 1)) * 80)
+              : 50;
+            
+            return (
+              <div 
+                class="absolute w-full flex items-center justify-center" 
+                style={`top: ${positionPercentage}%`}
+              >
+                <SubwayStation 
+                  title={subStation.title} 
+                  themeClass={themeClass} 
+                  debug={debugStations} 
+                />
+              </div>
+            );
+          })}
+        </div>
+      )
+    }
+  </div>
+
+  {/* Roundel at the end of segment (except for last segment) */}
+  {
+    !isLastSegment && station && (
+      <div class={twMerge('relative flex flex-col items-center pt-9', debugBorder, debugColors.roundel)}>
+        <Roundel {...station.roundel} />
+      </div>
+    )
+  }
+</div>

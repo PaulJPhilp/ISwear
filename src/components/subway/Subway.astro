@@ -1,106 +1,71 @@
 ---
 import { twMerge } from 'tailwind-merge';
-import Roundel, { type RoundelProps } from '../widgets/Roundel.astro';
-import { StationName } from '../station/StationName';
+import type { StationProps } from '~/types/station';
+import SubwayTitle from './SubwayTitle.astro';
+import SubwaySegment from './SubwaySegment.astro';
 
-interface StationProps {
-  topic: string;
-  title: string;
-  description: string;
-  stations: Array<string>;
-  roundel: RoundelProps;
-}
-
-export interface Props {  
+export interface Props {
   stations: StationProps[];
   title: string;
   classes?: Record<string, string>;
+  theme?: string;
 }
 
-const { stations, classes, title } = Astro.props;
-const { container: containerClass = '', panel: panelClass = '', title: titleClass = '' } = (classes ?? {}) as Record<string, string>;
+const { stations, classes, title, theme = 'default' } = Astro.props;
+const {
+  container: containerClass = '',
+  panel: panelClass = '',
+  title: titleClass = '',
+} = (classes ?? {}) as Record<string, string>;
+
+// Get the TfL color class if theme exists
+const themeClass = `station-theme-${theme}`;
 ---
 
-<div class={twMerge('subway-timeline flex flex-col items-center', containerClass)}>
-  {/* Timeline header with title */}
-  {
-    title && (
-      <h1
-        class={twMerge(
-          'text-2xl font-bold mb-8 text-center cursor-pointer',
-          'transition-all duration-300 ease-in-out hover:scale-110 hover:text-teal-500 text-blue-600',
-          titleClass
-        )}
-      >
-        {title}
-      </h1>
-    )
-  }
+<div 
+  class={twMerge(
+    'subway-timeline flex flex-col items-center',
+    themeClass,
+    containerClass
+  )} 
+  data-subway 
+  data-theme={theme}
+>
+  <SubwayTitle {title} {theme} {titleClass} />
 
   {/* Timeline container */}
   <div class="relative w-full max-w-[500px] px-32">
     {
-      [...stations, null].map((currentStation, index) => {
-        const isLastSegment = index === stations.length;
-        const isFirstSegment = index === 0;
-        const isOddSegment = index % 2 === 1;
-
-        return (
-          <div class={twMerge('relative flex flex-col', !isLastSegment && 'mb-[5px]', panelClass, classes?.panel)}>
-            {/* Line segment with stations */}
-            <div class="relative h-[172.5px] w-full">
-              {/* Vertical line - adjusted to start/end at roundels */}
-              <div
-                class={twMerge(
-                  'absolute left-1/2 -translate-x-1/2 w-[5px]',
-                  'bg-slate-700',
-                  isOddSegment ? 'top-[39px]' : 'top-0',
-                  isFirstSegment ? 'top-0' : 'top-0',
-                  isLastSegment ? 'bottom-0' : 'bottom-[-39px]'
-                )}
-              />
-
-              {/* Station markers - only render if there are stations */}
-              {currentStation && currentStation.stations && currentStation.stations.length > 0 &&
-                (() => {
-                  // Filter valid stations and get their indices
-                  const validStations = currentStation.stations.filter(station => station);
-
-                  return (
-                    <div>
-                      {validStations.map((station, validIndex) => (
-                        <div
-                          class={twMerge(
-                            'subway-station group relative flex flex-col items-center',
-                            validIndex === 0 ? 'first:pt-0' : 'pt-8'
-                          )}
-                        >
-                          <div class="relative h-[3px]">
-                            {/* Hash mark */}
-                            <div
-                              class={twMerge(
-                                'absolute left-1/2 w-[9px] h-full -translate-x-1/2 bg-slate-700',
-                                'transition-all duration-300 ease-in-out group-hover:w-[15px] group-hover:bg-blue-500'
-                              )}
-                            />
-                            <StationName name={station} client:load />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })()}
-            </div>
-
-            {/* Roundel at the end of segment (except for last segment) */}
-            {!isLastSegment && currentStation && (
-              <div class="relative flex flex-col items-center pt-9">
-                <Roundel {...currentStation?.roundel} />
-              </div>
-            )}
-          </div>
-        );
-      })
+      stations.map((currentStation, index) => (
+        <SubwaySegment
+          station={currentStation}
+          isLastSegment={index === stations.length - 1}
+          isFirstSegment={index === 0}
+          isOddSegment={index % 2 === 1}
+          {themeClass}
+          {panelClass}
+          debugStations={false}
+        />
+      ))
     }
   </div>
 </div>
+
+<script>
+  // Listen for theme changes
+  document.addEventListener('themechange', ((e: CustomEvent) => {
+    const { theme } = e.detail;
+    if (theme) {
+      const title = document.querySelector('.subway-timeline h1');
+      if (title) {
+        // Update title color
+        title.classList.forEach(className => {
+          if (className.startsWith('text-tfl')) {
+            title.classList.remove(className);
+          }
+        });
+        title.classList.add(`text-tfl${theme.charAt(0).toUpperCase() + theme.slice(1)}`);
+      }
+    }
+  }) as EventListener);
+</script>
