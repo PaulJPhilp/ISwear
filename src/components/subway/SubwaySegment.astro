@@ -52,22 +52,46 @@ const debugColors = {
   )
 }
 
-<div class={twMerge('relative', !isLastSegment && 'mb-[5px]', panelClass, debugBorder, debugColors.container)}>
-  <div class="relative h-[172.5px] w-full">
+<div class={twMerge(
+  'relative',
+  'transition-all duration-300',
+  !isLastSegment && 'mb-[5px] sm:mb-[8px] md:mb-[10px] lg:mb-[12px] xl:mb-[15px]',
+  panelClass,
+  debugBorder,
+  debugColors.container
+)}>
+  <div class={twMerge(
+    'relative w-full',
+    'h-[120px] sm:h-[140px] md:h-[160px] lg:h-[172.5px] xl:h-[185px]'
+  )}>
     <SubwayLine {isOddSegment} {isFirstSegment} {isLastSegment} />
 
     {
       stations && stations.length > 0 && (
-        <div class={twMerge('h-full relative', debugBorder, debugColors.stationsWrapper)}>
+        <div class={twMerge(
+          'h-full relative',
+          'transition-all duration-300',
+          debugBorder,
+          debugColors.stationsWrapper
+        )}>
           {stations.map((subStation, index) => {
             const totalStations = stations.length;
+            const baseSpacing = {
+              mobile: 15,
+              tablet: 12,
+              desktop: 10
+            };
+            
             const positionPercentage = totalStations > 1 
-              ? (10 + (index / (totalStations - 1)) * 80)
+              ? (baseSpacing.mobile + (index / (totalStations - 1)) * 70)
               : 50;
             
             return (
               <div 
-                class="absolute w-full flex items-center justify-center" 
+                class={twMerge(
+                  'absolute w-full flex items-center justify-center',
+                  'transition-all duration-300'
+                )}
                 style={`top: ${positionPercentage}%`}
               >
                 <SubwayStation 
@@ -83,10 +107,14 @@ const debugColors = {
     }
   </div>
 
-  {/* Roundel at the end of segment (except for last segment) */}
   {
     !isLastSegment && station && (
-      <div class={twMerge('relative flex flex-col items-center pt-9', debugBorder, debugColors.roundel)}>
+      <div class={twMerge(
+        'relative flex flex-col items-center',
+        'pt-6 sm:pt-7 md:pt-8 lg:pt-9 xl:pt-10',
+        debugBorder,
+        debugColors.roundel
+      )}>
         <Roundel {...station.roundel} />
       </div>
     )

@@ -1,166 +1,161 @@
 /* TfL Colors */
 :root {
-  /* Main TfL Colors */
-  --tfl-blue: #000f9f;
-  --tfl-yellow: #FFCD00;
-  --tfl-red: #7A0001;
-  --tfl-green: #007229;
-  --tfl-grey: #6D8F96;
-  --tfl-dark-grey: #1E3345;
-  --tfl-white: #ffffff;
-  --tfl-black: #000000;
+	/* Main TfL Colors */
+	--tfl-blue: #000f9f;
+	--tfl-yellow: #ffcd00;
+	--tfl-red: #7a0001;
+	--tfl-green: #007229;
+	--tfl-grey: #6d8f96;
+	--tfl-dark-grey: #1e3345;
+	--tfl-white: #ffffff;
+	--tfl-black: #000000;
 
-  /* Line Colors */
-  --tfl-bakerloo: #B26300;
-  --tfl-central: #DC241F;
-  --tfl-circle: #FFC80A;
-  --tfl-district: #007D32;
-  --tfl-elizabeth: #6950A1;
-  --tfl-hammersmith-city: #F589A6;
-  --tfl-jubilee: #6A7278;
-  --tfl-metropolitan: #751056;
-  --tfl-northern: #000000;
-  --tfl-piccadilly: #0019A8;
-  --tfl-victoria: #00A0E2;
-  --tfl-waterloo-city: #76D0BD;
-  --tfl-dlr: #00AFAD;
-  --tfl-overground: #E86A10;
+	/* Line Colors */
+	--tfl-bakerloo: #b26300;
+	--tfl-central: #dc241f;
+	--tfl-circle: #ffc80a;
+	--tfl-district: #007d32;
+	--tfl-elizabeth: #6950a1;
+	--tfl-hammersmith-city: #f589a6;
+	--tfl-jubilee: #6a7278;
+	--tfl-metropolitan: #751056;
+	--tfl-northern: #000000;
+	--tfl-piccadilly: #0019a8;
+	--tfl-victoria: #00a0e2;
+	--tfl-waterloo-city: #76d0bd;
+	--tfl-dlr: #00afad;
+	--tfl-overground: #e86a10;
 
-  /* Transition settings */
-  --theme-transition-duration: 200ms;
-  --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-  --color-transition: color var(--theme-transition-duration) var(--theme-transition-timing);
-  --transform-transition: transform 150ms var(--theme-transition-timing);
-  --font-transition: font-weight 100ms linear;
+	/* Transition settings */
+	--theme-transition-duration: 200ms;
+	--theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+	--transform-transition: transform var(--theme-transition-duration)
+		var(--theme-transition-timing);
+	--color-transition: color var(--theme-transition-duration)
+		var(--theme-transition-timing);
+	--font-transition: font-size var(--theme-transition-duration)
+		var(--theme-transition-timing), font-weight var(--theme-transition-duration)
+		var(--theme-transition-timing);
 }
 
 /* Base transitions for all themed elements */
 [class*="station-theme-"] {
-  transition: 
-    var(--color-transition),
-    var(--transform-transition),
-    var(--font-transition);
+	transition: var(--color-transition), var(--font-transition);
 }
 
 /* Default theme (Blue) */
 .station-theme-default {
-  --station-text-color: var(--tfl-blue);
-  --station-hover-color: #000852;  /* Darker for better contrast */
-  --hashmark-color: var(--tfl-blue);
-  --hashmark-hover-color: #000852;  /* Match station hover color */
-  --station-font-size: 0.875rem;
-  --station-hover-font-size: 0.875rem;  /* Slightly larger difference */
-  --station-font-weight: 450;  /* Slightly lighter for better contrast */
-  --station-hover-font-weight: 550;  /* Bolder for emphasis */
-  --station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);  /* Subtle text shadow */
-  transition: all 0.2s ease-in-out;  /* Smooth transitions */
+	--station-text-color: var(--tfl-blue);
+	--station-hover-color: #000852; /* Darker for better contrast */
+	--hashmark-color: var(--tfl-blue);
+	--hashmark-hover-color: #000852; /* Match station hover color */
+	--station-font-size: 0.875rem;
+	--station-hover-font-size: 0.700rem; /* Slightly larger difference */
+	--station-font-weight: 450; /* Slightly lighter for better contrast */
+	--station-hover-font-weight: 550; /* Bolder for emphasis */
+	--station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
 }
 
 /* Blue theme */
 .station-theme-blue {
-  --station-text-color: var(--tfl-blue);
-  --station-hover-color: #000852;  /* Darker for better contrast */
-  --hashmark-color: #1a277f;
-  --hashmark-hover-color: #000852;  /* Match station hover color */
-  --station-font-size: 0.875rem;
-  --station-hover-font-size: 0.875rem;
-  --station-font-weight: 450;
-  --station-hover-font-weight: 550;
-  --station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-in-out;
+	--station-text-color: var(--tfl-blue);
+	--station-hover-color: #000852; /* Darker for better contrast */
+	--hashmark-color: #1a277f;
+	--hashmark-hover-color: #000852; /* Match station hover color */
+	--station-font-size: 0.875rem;
+	--station-hover-font-size: 0.875rem;
+	--station-font-weight: 450;
+	--station-hover-font-weight: 550;
+	--station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
 }
 
 /* Red theme */
 .station-theme-red {
-  --station-text-color: var(--tfl-red);
-  --station-hover-color: #600001;  /* Darker for better contrast */
-  --hashmark-color: var(--tfl-red);
-  --hashmark-hover-color: #600001;
-  --station-font-size: 0.875rem;
-  --station-hover-font-size: 0.875rem;
-  --station-font-weight: 450;
-  --station-hover-font-weight: 550;
-  --station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-in-out;
+	--station-text-color: var(--tfl-red);
+	--station-hover-color: #600001; /* Darker for better contrast */
+	--hashmark-color: var(--tfl-red);
+	--hashmark-hover-color: #600001;
+	--station-font-size: 0.875rem;
+	--station-hover-font-size: 0.875rem;
+	--station-font-weight: 450;
+	--station-hover-font-weight: 550;
+	--station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
 }
 
 /* Yellow theme */
 .station-theme-yellow {
-  --station-text-color: var(--tfl-yellow);
-  --station-hover-color: #cca300;  /* Darker for better contrast */
-  --hashmark-color: var(--tfl-yellow);
-  --hashmark-hover-color: #cca300;
-  --station-font-size: 0.875rem;
-  --station-hover-font-size: 0.875rem;
-  --station-font-weight: 450;
-  --station-hover-font-weight: 550;
-  --station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-in-out;
+	--station-text-color: var(--tfl-yellow);
+	--station-hover-color: #cca300; /* Darker for better contrast */
+	--hashmark-color: var(--tfl-yellow);
+	--hashmark-hover-color: #cca300;
+	--station-font-size: 0.875rem;
+	--station-hover-font-size: 0.875rem;
+	--station-font-weight: 450;
+	--station-hover-font-weight: 550;
+	--station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
 }
 
 /* Green theme */
 .station-theme-green {
-  --station-text-color: var(--tfl-green);
-  --station-hover-color: #005b21;  /* Darker for better contrast */
-  --hashmark-color: var(--tfl-green);
-  --hashmark-hover-color: #005b21;
-  --station-font-size: 0.875rem;
-  --station-hover-font-size: 0.875rem;
-  --station-font-weight: 450;
-  --station-hover-font-weight: 550;
-  --station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-in-out;
+	--station-text-color: var(--tfl-green);
+	--station-hover-color: #005b21; /* Darker for better contrast */
+	--hashmark-color: var(--tfl-green);
+	--hashmark-hover-color: #005b21;
+	--station-font-size: 0.875rem;
+	--station-hover-font-size: 0.875rem;
+	--station-font-weight: 450;
+	--station-hover-font-weight: 550;
+	--station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
 }
 
 /* Grey theme */
 .station-theme-grey {
-  --station-text-color: var(--tfl-grey);
-  --station-hover-color: #576f75;  /* Darker for better contrast */
-  --hashmark-color: var(--tfl-grey);
-  --hashmark-hover-color: #576f75;
-  --station-font-size: 0.875rem;
-  --station-hover-font-size: 0.875rem;
-  --station-font-weight: 450;
-  --station-hover-font-weight: 550;
-  --station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-in-out;
+	--station-text-color: var(--tfl-grey);
+	--station-hover-color: #576f75; /* Darker for better contrast */
+	--hashmark-color: var(--tfl-grey);
+	--hashmark-hover-color: #576f75;
+	--station-font-size: 0.875rem;
+	--station-hover-font-size: 0.875rem;
+	--station-font-weight: 450;
+	--station-hover-font-weight: 550;
+	--station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
 }
 
 /* Dark Grey theme */
 .station-theme-darkgrey {
-  --station-text-color: var(--tfl-dark-grey);
-  --station-hover-color: #162634;  /* Darker for better contrast */
-  --hashmark-color: var(--tfl-dark-grey);
-  --hashmark-hover-color: #162634;
-  --station-font-size: 0.875rem;
-  --station-hover-font-size: 0.875rem;
-  --station-font-weight: 450;
-  --station-hover-font-weight: 550;
-  --station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-in-out;
+	--station-text-color: var(--tfl-dark-grey);
+	--station-hover-color: #162634; /* Darker for better contrast */
+	--hashmark-color: var(--tfl-dark-grey);
+	--hashmark-hover-color: #162634;
+	--station-font-size: 0.875rem;
+	--station-hover-font-size: 0.875rem;
+	--station-font-weight: 450;
+	--station-hover-font-weight: 550;
+	--station-text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
 }
 
 /* Station popover styles */
 .station-popover {
-  --popover-offset: 0.25rem; /* Same as left-1 (0.25rem) */
-  margin-right: var(--popover-offset);
-  background-color: var(--tfl-grey);
-  border: 2px solid var(--station-text-color);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	--popover-offset: 0.25rem; /* Same as left-1 (0.25rem) */
+	margin-right: var(--popover-offset);
+	background-color: var(--tfl-grey);
+	border: 2px solid var(--station-text-color);
+	border-radius: 0.5rem;
+	padding: 1rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+		rgba(0, 0, 0, 0.06);
 }
 
 .station-popover h4 {
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: #1a1a1a;  /* Dark gray, almost black */
+	text-align: center;
+	font-size: 1.25rem;
+	font-weight: 600;
+	margin-bottom: 0.75rem;
+	color: #1a1a1a; /* Dark gray, almost black */
 }
 
 .station-popover .content {
-  color: var(--tfl-white);
+	color: var(--tfl-white);
 }
 
 .station-popover .content h1,
@@ -169,61 +164,101 @@
 .station-popover .content h4,
 .station-popover .content h5,
 .station-popover .content h6 {
-  color: var(--tfl-white);
+	color: var(--tfl-white);
 }
 
 .station-popover .content a {
-  color: var(--tfl-white);
-  text-decoration: none;
-  font-weight: bold;
-  transition: color var(--theme-transition-duration) var(--theme-transition-timing);
+	color: var(--tfl-white);
+	text-decoration: none;
+	font-weight: bold;
 }
 
 .station-popover .content a:hover {
-  color: var(--tfl-yellow);
+	color: var(--tfl-yellow);
 }
 
 .station-popover .content p {
-  margin-bottom: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 
 .station-popover .content ul {
-  list-style-type: disc;
-  padding-left: 1.25rem;
-  margin-bottom: 0.5rem;
+	list-style-type: disc;
+	padding-left: 1.25rem;
+	margin-bottom: 0.5rem;
 }
 
 .station-popover[data-side="right"] {
-  transform-origin: left;
+	transform-origin: left;
 }
 
 /* Add hashmark base styles */
 .station-hashmark {
-  background-color: var(--hashmark-color);
+	position: absolute;
+	width: 5px;
+	height: 14px;
+	background-color: var(--hashmark-color);
+	transition: background-color 0.2s ease-in-out;
 }
 
 .station-hashmark:hover {
-  background-color: var(--hashmark-hover-color);
+	background-color: var(--hashmark-hover-color);
 }
 
-/* Add station name base styles */
+/* Station name base styles */
 .station-name {
-  color: var(--station-text-color);
-  font-size: var(--station-font-size);
-  font-weight: var(--station-font-weight);
-  transition: 
-    var(--color-transition),
-    var(--transform-transition),
-    var(--font-transition);
+	white-space: nowrap; /* Prevent text wrapping */
+	color: var(--station-text-color);
+	font-size: var(--station-font-size);
+	font-weight: var(--station-font-weight);
+	position: relative;
+	display: inline-block;
+	transform: none; /* Remove the transform that was causing jitter */
+	backface-visibility: hidden; /* Reduce any potential flickering */
+	-webkit-font-smoothing: antialiased; /* Smoother text rendering */
+	margin-right: 2rem; /* Add right margin to create space */
 }
 
 .station-name:hover {
-  color: var(--station-hover-color);
-  font-size: var(--station-hover-font-size);
-  font-weight: var(--station-hover-font-weight);
-  transform: translateX(-0.5rem);
+	color: var(--station-hover-color);
 }
 
-.group:hover .station-name {
-  transform: translateX(-0.5rem);
+/* Station name responsive styles */
+.station-name {
+	--station-font-size-base: 0.875rem;
+	--station-font-size-hover: 0.875rem;
+	--station-font-weight-base: 450;
+	--station-font-weight-hover: 550;
+
+	/* ... existing styles ... */
+
+	@media (min-width: 1280px) {
+		--station-font-size-base: 1.25rem;
+		--station-font-size-hover: 1.25rem;
+		margin-right: 2.5rem;
+	}
+}
+
+/* Popover responsive styles */
+.station-popover {
+	--popover-max-width: 280px;
+	--popover-padding: 1rem;
+
+	/* ... existing media queries ... */
+
+	@media (min-width: 1280px) {
+		--popover-max-width: 400px;
+		--popover-padding: 1.75rem;
+	}
+}
+
+/* Content styles in popover */
+.station-popover .content {
+	--content-font-size: 0.875rem;
+	--content-line-height: 1.5;
+
+	/* ... existing media queries ... */
+
+	@media (min-width: 1280px) {
+		--content-font-size: 1.25rem;
+	}
 }

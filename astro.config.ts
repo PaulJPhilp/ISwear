@@ -24,6 +24,7 @@ const hasExternalScripts = false;
 const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
+
 export default defineConfig({
   output: 'hybrid',
   adapter: node({
@@ -32,23 +33,8 @@ export default defineConfig({
   site: 'https://paulphilp.com',
   trailingSlash: 'never',
   prefetch: true,
-
-  // Content Collections Config
-  content: {
-    collections: {
-      stations: {
-        type: 'content',
-        entryType: 'mdx'
-      }
-    }
-  },
-
   integrations: [
-    mdx({
-      syntaxHighlight: 'shiki',
-      shikiConfig: { theme: 'github-dark' },
-      gfm: true,
-    }),
+    mdx(),
     react({
       experimentalReactChildren: true,
     }),

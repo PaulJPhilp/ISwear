@@ -1,0 +1,27 @@
+---
+title: Amdahl's Law
+---
+
+## The Limits of Parallel Computation
+
+Amdahl's Law, formulated by computer architect Gene Amdahl in 1967, provides a fundamental insight into the potential speedup of parallel computing systems.
+
+### The Law
+
+The law states that the potential performance improvement of a system is limited by the fraction of the system that can be parallelized:
+
+Speedup = 1 / ((1 - P) + P/N)
+
+Where:
+- P is the proportion of the system that can be parallelized
+- N is the number of processors
+
+### Impact
+
+This law reveals critical insights into parallel computing:
+- Not all parts of a computational problem can be parallelized
+- Adding more processors has diminishing returns
+- Identifies the bottlenecks in parallel system design
+- Guides optimization strategies in high-performance computing
+
+Amdahl's Law remains a cornerstone principle in understanding computational efficiency and the fundamental limits of parallel processing.
