@@ -1,81 +1,48 @@
-import { cn } from "~/utils/utils";
 import * as React from "react";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "../../ui/popover";
+import { Button } from "@/components/ui/button"
 
 interface StationPopoverProps {
     name: string;
-    content: string;
-    triggerClassName?: string;
+    children: React.ReactNode;
 }
 
-export function StationPopover({ name, content, triggerClassName }: StationPopoverProps) {
+export function StationPopover({ name, children }: StationPopoverProps) {
     const [open, setOpen] = React.useState(false);
 
     const handleOpenChange = React.useCallback((isOpen: boolean) => {
         setOpen(isOpen);
     }, []);
 
-    const handleClick = React.useCallback((e: React.MouseEvent) => {
-        e.stopPropagation();
-        setOpen(true);
-    }, []);
-
     return (
-        <Popover open={open} onOpenChange={handleOpenChange}>
-            <PopoverTrigger asChild>
-                <button
-                    type="button"
-                    aria-label={`View information for ${name} station`}
-                    className={cn(
-                        "station-name",
-                        "inline-flex items-center justify-start",
-                        "rounded-sm outline-none",
-                        "text-left rtl:text-right",
-                        "px-1 sm:px-1.5 md:px-2 lg:px-2.5 xl:px-3",
-                        "py-0.5 sm:py-1 md:py-1.5 lg:py-2 xl:py-2.5",
-                        "hover:bg-black/5 focus:bg-black/5",
-                        "dark:hover:bg-white/5 dark:focus:bg-white/5",
-                        "transition-all duration-300",
-                        triggerClassName
-                    )}
-                    onClick={handleClick}
-                >
-                    {name}
-                </button>
-            </PopoverTrigger>
-            <PopoverContent 
-                className={cn(
-                    "station-popover",
-                    "w-[280px] sm:w-[300px] md:w-[330px] lg:w-[360px] xl:w-[400px]",
-                    "max-h-[300px] sm:max-h-[350px] md:max-h-[400px] lg:max-h-[450px] xl:max-h-[500px]",
-                    "p-3 sm:p-4 md:p-5 lg:p-6 xl:p-7",
-                    "overflow-y-auto",
-                    "animate-in fade-in-0 zoom-in-95",
-                    "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
-                )} 
-                side="right" 
-                sideOffset={20}
-                align="center"
-            >
-                <div className={cn(
-                    "relative",
-                    "space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-5 xl:space-y-6"
-                )}>
-                    <div 
-                        className={cn(
-                            "content prose prose-sm sm:prose-base md:prose-lg lg:prose-xl xl:prose-2xl",
-                            "max-w-none",
-                            "text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl"
-                        )}
-                    >
-                        {content}
-                    </div>
+        <div className="flex flex-col sm:flex-row p-4 sm:p-8 lg:p-12 xl:p-16 border-2 border-dashed border-purple-900 h-24 sm:h-32 md:h-40 lg:h-48 xl:h-56">
+            <div className="flex flex-row sm:flex-col gap-4 sm:gap-8 lg:gap-12 xl:gap-16 border-2 border-dashed border-green-800 h-full">
+                <div className="p-2 sm:p-4 lg:p-6 xl:p-8 w-auto sm:w-64 lg:w-72 xl:w-80 relative border-2 border-dashed border-orange-800">
+                    <Popover open={open} onOpenChange={handleOpenChange}>
+                        <PopoverTrigger asChild>
+                            <Button variant="link" className="text-sm sm:text-lg lg:text-xl xl:text-2xl font-medium">
+                                {name.split('\n').map((part, i, arr) => (
+                                    <React.Fragment key={`station-name-part-${part}`}>
+                                        {part}
+                                        {i < arr.length - 1 && <br />}
+                                    </React.Fragment>
+                                ))}
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[280px] sm:w-80 lg:w-96 xl:w-[440px]">
+                            <div className="grid gap-4">
+                                <div className="space-y-2">
+                                    {children}
+                                </div>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
                 </div>
-            </PopoverContent>
-        </Popover>
+            </div>
+        </div>
     );
 }

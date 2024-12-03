@@ -14,7 +14,7 @@ export const BLOG = {
   },
   
   post: {
-    permalink: '%slug%', // variables: %slug%
+    permalink: 'post/%slug%', // variables: %slug%
   },
   
   category: {

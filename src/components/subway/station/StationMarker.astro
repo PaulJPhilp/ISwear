@@ -1,0 +1,16 @@
+---
+
+interface Props {
+  color?: string;
+}
+
+const { color = 'var(--tfl-grey)' } = Astro.props;
+
+---
+
+<div class="relative w-full h-full flex items-center justify-center">
+  <div
+    class="w-[10px] h-[1px] absolute right-1/2 -translate-x-1/2"
+    style={{ backgroundColor: color }}
+  />
+</div> 

@@ -1,10 +1,10 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
 import Subway from '~/components/subway/Subway.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import type { RoundelProps } from '~/components/widgets/Roundel.astro';
-import type { StationProps } from '~/types/station';
+import Layout from '~/layouts/PageLayout.astro';
 import { TflColors } from '~/tflColors';
+import type { StationProps } from '~/types/station';
 import { generateRoundel, registerRoundel } from '~/utils/generateRoundel';
 
 const metadata = {
@@ -160,7 +160,8 @@ const AllStations: { title: string; stations: StationProps[] } = {
         {
           topic: 'McLuhan',
           title: 'The Medium is the Message',
-          description: 'How we communicate shapes what we say - Twitter makes us brief, books make us deep, TikTok makes us visual.',
+          description:
+            'How we communicate shapes what we say - Twitter makes us brief, books make us deep, TikTok makes us visual.',
           stations: [],
           roundel: buildRoundel('McLuhan'),
         },
