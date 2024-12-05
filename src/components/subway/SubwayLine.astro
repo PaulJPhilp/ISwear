@@ -13,10 +13,12 @@ import { twMerge } from 'tailwind-merge';
 <div
   class={twMerge(
     'absolute left-1/2 -translate-x-1/2',
-    'w-[3px] sm:w-[4px] md:w-[5px]',
+    'h-full w-[3px] sm:w-[4px] md:w-[5px]',
     'bg-slate-700',
+
     isOddSegment ? 'top-[30px] sm:top-[35px] md:top-[39px]' : 'top-0',
     isFirstSegment ? 'top-0' : 'top-0',
     isLastSegment ? 'bottom-0' : 'bottom-[-30px] sm:bottom-[-35px] md:bottom-[-39px]'
   )}
-/>
+>
+</div>

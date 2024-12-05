@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StationName } from "./StationName";
-import type { Station } from "../../types/station";
+import type { Station } from "../../../types/station";
 
 interface StationCardProps {
   station: Station;

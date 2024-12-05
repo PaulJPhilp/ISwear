@@ -1,16 +1,77 @@
 ---
+//import DebugDiv from '../../widgets/DebugDiv.astro';
 
 interface Props {
   color?: string;
+  className?: string;
+  debug?: boolean;
+  numHashmarks?: number;
 }
 
-const { color = 'var(--tfl-grey)' } = Astro.props;
+const { 
+  color = 'var(--tfl-grey)', 
+  className = '',
+  numHashmarks = 3 // Default to 3 hashmarks
+} = Astro.props;
 
+/**
+ * StationMarker Component
+ *
+ * This component is intentionally "dumb" about its positioning, following the principle
+ * that components should focus on their core visual properties (width, height, color)
+ * while letting parent containers control their positioning. This makes the component
+ * more reusable and maintainable, as it can be positioned differently in various contexts
+ * without internal modifications.
+ */
 ---
 
-<div class="relative w-full h-full flex items-center justify-center">
-  <div
-    class="w-[10px] h-[1px] absolute right-1/2 -translate-x-1/2"
-    style={{ backgroundColor: color }}
-  />
-</div> 
+<div class={className}>
+    <div class="w-full h-full flex flex-col gap-1 items-center">
+      {[...Array(numHashmarks)].map(() => (
+        <div
+          class="rounded-full transition-all duration-300"
+          style={{
+            width: 'var(--marker-width, 10px)',
+            height: 'var(--marker-height, 2px)',
+            backgroundColor: color
+          }}
+        />
+      ))}
+    </div>
+</div>
+
+<style>
+  /* Responsive marker sizes */
+  div {
+    --marker-width: 10px;
+    --marker-height: 3px;
+  }
+
+  @media (min-width: 640px) {
+    div {
+      --marker-width: 13px;
+      --marker-height: 3px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    div {
+      --marker-width: 15px;
+      --marker-height: 4px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    div {
+      --marker-width: 17px;
+      --marker-height: 4px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    div {
+      --marker-width: 19px;
+      --marker-height: 5px;
+    }
+  }
+</style>

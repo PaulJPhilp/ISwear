@@ -12,96 +12,49 @@ interface Props {
   isOddSegment: boolean;
   themeClass: string;
   panelClass?: string;
-  debug?: boolean;
-  debugStations?: boolean;
-  debugSegmentLayout?: boolean;
 }
 
-const {
-  station,
-  isLastSegment,
-  isFirstSegment,
-  isOddSegment,
-  themeClass,
-  panelClass = '',
-  debugStations = true,
-  debugSegmentLayout = false,
-} = Astro.props;
+const { station, isLastSegment, isFirstSegment, isOddSegment, themeClass, panelClass = '' } = Astro.props;
 
 const stations = station?.stations ?? [];
-const debugBorder = debugSegmentLayout ? 'border-2 border-dashed' : '';
-const debugColors = {
-  container: debugSegmentLayout ? 'border-purple-500' : '',
-  stationsWrapper: debugSegmentLayout ? 'border-blue-500' : '',
-  roundel: debugSegmentLayout ? 'border-pink-500' : '',
-};
+const stationTitle = String(station?.title);
+console.log(`stationTitle: ${stationTitle}`);
 ---
 
-{
-  debugStations && (
-    <div class="debug-stations text-xs text-gray-500 p-2 bg-gray-100 rounded">
-      <p>Debug Stations Information:</p>
-      <ul>
-        {stations.map((s, index) => (
-          <li>
-            Station {index + 1}: {s.title}
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
-
-<div class={twMerge(
-  'relative',
-  'transition-all duration-300',
-  !isLastSegment && 'mb-[5px] sm:mb-[8px] md:mb-[10px] lg:mb-[12px] xl:mb-[15px]',
-  panelClass,
-  debugBorder,
-  debugColors.container
-)}>
-  <div class={twMerge(
-    'relative w-full',
-    'h-[120px] sm:h-[140px] md:h-[160px] lg:h-[172.5px] xl:h-[185px]'
-  )}>
+<div
+  class={twMerge(
+    'relative',
+    'transition-all duration-300',
+    !isLastSegment && 'mb-[5px] sm:mb-[8px] md:mb-[10px] lg:mb-[12px] xl:mb-[15px]',
+    panelClass
+  )}
+>
+  <div class="relative w-full h-[120px] sm:h-[140px] md:h-[160px] lg:h-[172.5px] xl:h-[185px]">
     <SubwayLine {isOddSegment} {isFirstSegment} {isLastSegment} />
 
+    {/* Main station */}
+    <div class="absolute w-full h-full">
+      <div class="h-full flex flex-col items-center justify-center">
+        <div class="w-full">
+          <SubwayStation title={stationTitle} themeClass={themeClass} />
+        </div>
+      </div>
+    </div>
+
+    {/* Sub-stations */}
     {
       stations && stations.length > 0 && (
-        <div class={twMerge(
-          'h-full relative',
-          'transition-all duration-300',
-          debugBorder,
-          debugColors.stationsWrapper
-        )}>
-          {stations.map((subStation, index) => {
-            const totalStations = stations.length;
-            const baseSpacing = {
-              mobile: 15,
-              tablet: 12,
-              desktop: 10
-            };
-            
-            const positionPercentage = totalStations > 1 
-              ? (baseSpacing.mobile + (index / (totalStations - 1)) * 70)
-              : 50;
-            
-            return (
-              <div 
-                class={twMerge(
-                  'absolute w-full flex items-center justify-center',
-                  'transition-all duration-300'
-                )}
-                style={`top: ${positionPercentage}%`}
-              >
-                <SubwayStation 
-                  title={subStation.title} 
-                  themeClass={themeClass} 
-                  debug={debugStations} 
+        <div class="absolute w-full h-full">
+          <div class="h-full flex flex-col items-center justify-evenly">
+            {stations.map((subStation) => (
+              <div class="w-full flex-1 flex items-center justify-center">
+                <SubwayStation
+                  title={typeof subStation.title === 'string' ? subStation.title : ''}
+                  themeClass={themeClass}
                 />
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       )
     }
@@ -109,12 +62,7 @@ const debugColors = {
 
   {
     !isLastSegment && station && (
-      <div class={twMerge(
-        'relative flex flex-col items-center',
-        'pt-6 sm:pt-7 md:pt-8 lg:pt-9 xl:pt-10',
-        debugBorder,
-        debugColors.roundel
-      )}>
+      <div class={twMerge('relative flex flex-col items-center', 'pt-6 sm:pt-7 md:pt-8 lg:pt-9 xl:pt-10')}>
         <Roundel {...station.roundel} />
       </div>
     )

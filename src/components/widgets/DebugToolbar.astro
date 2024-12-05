@@ -1,0 +1,49 @@
+---
+import { debugState } from '~/utils/debugState';
+---
+
+<div class="fixed bottom-4 left-4 flex gap-2 z-[9999] transition-opacity opacity-50 hover:opacity-100">
+  {/* Debug toggle */}
+  <button
+    id="debug-toggle"
+    class="bg-gray-800 text-white px-3 py-2 rounded-full shadow-lg text-sm font-mono hover:bg-gray-700 transition-colors"
+  >
+    Debug: {debugState.isEnabled ? 'ON' : 'OFF'}
+  </button>
+
+  {/* Breakpoint indicator */}
+  <div 
+    class="bg-gray-800 text-white px-3 py-2 rounded-full shadow-lg text-sm font-mono transition-opacity"
+    style={`visibility: ${debugState.isEnabled ? 'visible' : 'hidden'}`}
+  >
+    <span class="sm:hidden">default (640px)</span>
+    <span class="hidden sm:inline md:hidden">sm (≥640px)</span>
+    <span class="hidden md:inline lg:hidden">md (≥768px)</span>
+    <span class="hidden lg:inline xl:hidden">lg (≥1024px)</span>
+    <span class="hidden xl:inline">xl (≥1280px)</span>
+  </div>
+</div>
+
+<script>
+  import { debugState } from '~/utils/debugState';
+
+  const toggleButton = document.getElementById('debug-toggle');
+  const breakpointIndicator = toggleButton?.nextElementSibling;
+
+  function updateToolbar() {
+    if (toggleButton) {
+      toggleButton.textContent = `Debug: ${debugState.isEnabled ? 'ON' : 'OFF'}`;
+    }
+    if (breakpointIndicator) {
+      breakpointIndicator.style.visibility = debugState.isEnabled ? 'visible' : 'hidden';
+    }
+  }
+
+  toggleButton?.addEventListener('click', () => {
+    debugState.toggle();
+    updateToolbar();
+  });
+
+  // Initialize
+  updateToolbar();
+</script>

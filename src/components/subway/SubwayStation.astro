@@ -1,101 +1,102 @@
 ---
-const { title } = Astro.props;
-
-import { type CollectionEntry, getCollection, getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import { twMerge } from 'tailwind-merge';
 import { toSlug } from '~/utils/toSlug';
-import { StationPopover } from './station/StationPopover';
-import StationMarker from './station/StationMarker.astro'
+import StationMarker from './station/StationMarker.astro';
+//import { StationName } from './station/StationName';
+import DebugDiv from '../widgets/DebugDiv.astro';
 
-// Split title if longer than 17 characters
-const formatTitle = (title: string) => {
-  if (title.length <= 17) return title;
-
-  // Find the last space before the 17th character
-  const spaceIndex = title.substring(0, 17).lastIndexOf(' ');
-  if (spaceIndex === -1) return title; // No space found, return original
-
-  return `${title.slice(0, spaceIndex)}\n${title.slice(spaceIndex + 1)}`;
-};
-
-const formattedTitle = formatTitle(title);
-
-// Special case mappings for titles that don't directly match their MDX files
-interface TitleMapping {
-  [key: string]: string
+interface Props {
+  title: string;
+  themeClass?: string;
 }
 
+// Types
+interface TitleMapping {
+  [key: string]: string;
+}
+
+interface StationError {
+  code: 'STATION_NOT_FOUND';
+  message: string;
+}
+
+// Constants
 const TITLE_MAPPINGS: TitleMapping = {
   'Increasing Modularity': 'Law of Increasing Modularity',
+};
+
+
+const MAX_TITLE_LENGTH = 17;
+
+// Utility functions
+
+function formatTitle(text: string): string {
+  if (text.length <= MAX_TITLE_LENGTH) return text;
+
+  const spaceIndex = text.substring(0, MAX_TITLE_LENGTH).lastIndexOf(' ');
+  if (spaceIndex === -1) return text;
+
+  return `${text.slice(0, spaceIndex)}\n${text.slice(spaceIndex + 1)}`;
 }
 
-// Load station content
-const mappedTitle = TITLE_MAPPINGS[title] || title;
-const slug = toSlug(mappedTitle);
-let stationEntry: CollectionEntry<'stations'> | undefined;
+async function findStationEntry(title: string): Promise<CollectionEntry<'stations'>> {
+  const mappedTitle = TITLE_MAPPINGS[title] || title;
+  const slug = toSlug(mappedTitle);
 
-// First try exact match
-stationEntry = await getEntry('stations', slug);
+  // Try exact match first
+  const exactMatch = await getEntry('stations', slug);
+  if (exactMatch) return exactMatch;
 
-// If no exact match, try to find a file that starts with the slug
-if (!stationEntry) {
+  // Try partial match
   const allStations = await getCollection('stations');
-  const matchingStation = allStations.find((entry) => entry.id.startsWith(slug));
-  if (matchingStation) {
-    stationEntry = matchingStation;
-  }
-}
+  const partialMatch = allStations.find((entry) => entry.id.startsWith(slug));
 
-// Add interface for better type safety
-interface StationError {
-  code: 'STATION_NOT_FOUND'
-  message: string
-}
+  if (partialMatch) return partialMatch;
 
-// Improve error handling
-if (!stationEntry) {
-  const error: StationError = {
+  throw {
     code: 'STATION_NOT_FOUND',
-    message: `Station entry not found: ${title} (slug: ${slug})`
-  }
-  throw error
+    message: `Station entry not found: ${title} (slug: ${slug})`,
+  } as StationError;
 }
 
-const { Content } = await stationEntry.render();
+// Data fetching
+const {
+  title,
+  themeClass,
+} = Astro.props;
 
-// Replace the dynamic offset calculation with Tailwind classes
-const offsetClasses = {
-  base: '-ml-1',
-  sm: '-ml-1.5',
-  md: '-ml-2',
-  lg: '-ml-2.5',
-  xl: '-ml-3'
-}
+//const debug = import.meta.env.DEV || import.meta.env.DEBUG?.toLowerCase() === 'true'
+const debug = false
 
-// Remove getOffset function as it won't be needed
+console.log(`Station: ${title} debug: ${debug} ${import.meta.env.DEV}`);
+
 ---
 
-<div class="w-full">
-  <div 
+{debug ? (
+  <DebugDiv 
+    color="green-500" 
     class={twMerge(
-      'w-auto transition-all duration-300 border-2 border-cyan-500',
-      'hover:scale-120 transition-transform duration-200 ease-in-out'
+      'station relative flex items-center justify-center',
+      'w-full sm:w-[calc(100%-2rem)] md:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)]',
+      'min-h-[8rem] sm:min-h-[10rem] md:min-h-[12rem] lg:min-h-[14rem]',
+      'p-4 sm:p-6 md:p-8 lg:p-10',
+      themeClass
     )}
+    sourceFile="src/components/subway/SubwayStation.astro"
+    sourceLine={78}
+    breakpoint="w-full sm:w-[calc(100%-2rem)] md:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)]"
+    showBackground 
+    forceShow
   >
-    <div
-      class={twMerge(
-        'text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl',
-        offsetClasses.base,
-        'sm:' + offsetClasses.sm,
-        'md:' + offsetClasses.md,
-        'lg:' + offsetClasses.lg,
-        'xl:' + offsetClasses.xl
-      )}
-    >
-      <StationPopover name={formattedTitle} client:load>
-        {Content && <Content />}
-      </StationPopover>
-      <StationMarker />
+    <div class="w-full h-full flex justify-center transition-transform duration-200 ease-in-out">
+      <StationMarker debug={debug} />
     </div>
+  </DebugDiv>
+) : 
+  <div class="relative w-full h-full flex justify-center transition-transform duration-200 ease-in-out">
+    <StationMarker debug={debug} />
+
   </div>
-</div>
+}

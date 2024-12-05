@@ -1,0 +1,117 @@
+---
+import { debugState } from '~/utils/debugState'; // Event type constant for debug state change events
+
+interface Props {
+  color?: string;
+  borderStyle?: 'solid' | 'dashed' | 'dotted' | 'double' | 'none';
+  borderWidth?: 'border' | 'border-2' | 'border-4' | 'border-8';
+  class?: string;
+  showBackground?: boolean;
+  forceShow?: boolean;
+  sourceFile?: string;
+  sourceLine?: number;
+  breakpoint?: string;
+}
+
+const {
+  color = 'orange-500',
+  borderStyle = 'solid',
+  borderWidth = 'border-2',
+  class: className = '',
+  showBackground = false,
+  forceShow = false,
+  sourceFile,
+  sourceLine,
+  breakpoint,
+} = Astro.props;
+
+const borderClass = `${borderWidth} border-${borderStyle} border-${color}`;
+const backgroundClass = showBackground ? `bg-${color}/10` : '';
+const debugClasses = [borderClass, backgroundClass].filter(Boolean).join(' ');
+
+// Create VSCode link if source information is provided
+const sourceLink = sourceFile && `${sourceFile}${sourceLine ? `:${sourceLine}` : ''}`;
+
+---
+
+<div 
+  class:list={[className, ((debugState.isEnabled || forceShow) ? debugClasses : ''), 'group relative']} 
+  data-debug-div 
+  data-debug-classes={debugClasses}
+>
+  <slot />
+  {(debugState.isEnabled || forceShow) && (
+    <div class="hidden group-hover:flex gap-2 absolute top-0 right-0 bg-gray-800 text-white text-xs px-2 py-1 rounded-bl cursor-pointer opacity-75 hover:opacity-100 z-[9999]">
+      {sourceLink && (
+        <button
+          title="Open in VSCode"
+          data-vscode-open
+          data-source-link={sourceLink}
+        >
+          {sourceFile.split('/').pop()}
+          {sourceLine ? `:${sourceLine}` : ''}
+        </button>
+      )}
+      {breakpoint && (
+        <span class="border-l border-gray-600 pl-2" title="Breakpoint">
+          {breakpoint}
+        </span>
+      )}
+    </div>
+  )}
+</div>
+
+<script>
+  import { debugState, DEBUG_STATE_CHANGE } from '~/utils/debugState';
+
+  function updateDebugElements() {
+    const debugDivs = document.querySelectorAll('[data-debug-div]');
+    debugDivs.forEach(div => {
+      const classList = div.className.split(' ');
+      // Remove existing debug classes
+      const cleanedClasses = classList.filter(cls => 
+        !cls.startsWith('border-') && 
+        !cls.startsWith('bg-')
+      );
+      
+      if (debugState.isEnabled) {
+        // Add debug classes back if debugging is enabled
+        const debugClasses = div.getAttribute('data-debug-classes')?.split(' ') || [];
+        div.className = [...cleanedClasses, ...debugClasses, 'group'].join(' ');
+      } else {
+        div.className = cleanedClasses.join(' ');
+      }
+    });
+    
+    // Dispatch custom event when debug state changes
+    window.dispatchEvent(new CustomEvent(DEBUG_STATE_CHANGE, {
+      detail: { isDebugMode: debugState.isEnabled }
+    }));
+  }
+
+  // Initialize on load
+  updateDebugElements();
+
+  // Listen for debug state changes
+  window.addEventListener(DEBUG_STATE_CHANGE, () => {
+    updateDebugElements();
+  });
+
+  // Handle VSCode link clicks
+  document.querySelectorAll('[data-vscode-open]').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      const sourceLink = button.getAttribute('data-source-link');
+      if (sourceLink) {
+        // Execute the shell script to open VSCode
+        fetch('/api/open-in-vscode', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ path: sourceLink }),
+        });
+      }
+    });
+  });
+</script>
