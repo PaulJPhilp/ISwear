@@ -1,7 +1,7 @@
 ---
 import { twMerge } from 'tailwind-merge';
 import type { StationProps } from '~/types/station';
-import Roundel from '../widgets/Roundel.astro';
+import Roundel, { type RoundelProps } from '../widgets/Roundel.astro';
 import SubwayLine from './SubwayLine.astro';
 import SubwayStation from './SubwayStation.astro';
 
@@ -29,29 +29,17 @@ console.log(`stationTitle: ${stationTitle}`);
     panelClass
   )}
 >
-  <div class="relative w-full h-[120px] sm:h-[140px] md:h-[160px] lg:h-[172.5px] xl:h-[185px]">
+  <div class="relative w-full h-[120px] sm:h-[120px] md:h-[120px] lg:h-[120px] xl:h-[120px]">
     <SubwayLine {isOddSegment} {isFirstSegment} {isLastSegment} />
-
-    {/* Main station */}
-    <div class="absolute w-full h-full">
-      <div class="h-full flex flex-col items-center justify-center">
-        <div class="w-full">
-          <SubwayStation title={stationTitle} themeClass={themeClass} />
-        </div>
-      </div>
-    </div>
 
     {/* Sub-stations */}
     {
       stations && stations.length > 0 && (
         <div class="absolute w-full h-full">
-          <div class="h-full flex flex-col items-center justify-evenly">
+          <div class="h-full flex flex-col items-center justify-evenly border-2 border-yellow-500">
             {stations.map((subStation) => (
-              <div class="w-full flex-1 flex items-center justify-center">
-                <SubwayStation
-                  title={typeof subStation.title === 'string' ? subStation.title : ''}
-                  themeClass={themeClass}
-                />
+              <div class="w-full">
+                <SubwayStation title={subStation.title} themeClass={themeClass} />
               </div>
             ))}
           </div>
@@ -63,7 +51,7 @@ console.log(`stationTitle: ${stationTitle}`);
   {
     !isLastSegment && station && (
       <div class={twMerge('relative flex flex-col items-center', 'pt-6 sm:pt-7 md:pt-8 lg:pt-9 xl:pt-10')}>
-        <Roundel {...station.roundel} />
+        <Roundel {...station.roundel as RoundelProps} />
       </div>
     )
   }

@@ -64,12 +64,15 @@ const AllStations: { title: string; stations: StationProps[] } = {
     {
       topic: 'Moore',
       title: "Moore's Law",
+      name: "Moore's Law",
+      content: "Moore's Law",
       description:
         'Computing power doubles every two years, while costs halve - the relentless force driving the software economy.',
       stations: [
         {
-          topic: "Shannon's Law",
           title: "Shannon's Law",
+          name: "Shannon's Law",
+          content: "Shannon's Law",
           description: 'The mathematical limits of information transmission.',
           stations: [],
           roundel: buildRoundel("Shannon's Law"),
@@ -80,11 +83,15 @@ const AllStations: { title: string; stations: StationProps[] } = {
     {
       topic: 'Latency',
       title: 'Latency Is Destiny',
+      name: 'Latency Is Destiny',
+      content: 'Latency Is Destiny',
       description: 'The speed of light sets the ultimate limits - in a digital world, distance still shapes destiny.',
       stations: [
         {
           topic: "Amdahl's Law",
           title: "Amdahl's Law",
+          name: "Amdahl's Law",
+          content: "Amdahl's Law",
           description: 'The limits of parallel processing.',
           stations: [],
           roundel: buildRoundel("Amdahl's Law"),
@@ -92,9 +99,11 @@ const AllStations: { title: string; stations: StationProps[] } = {
         {
           topic: "Brook's Law",
           title: "Brook's Law",
+          name: "Brook's Law",
+          content: "Brook's Law",
           description: 'Adding more people to a late project makes it later.',
           stations: [],
-          roundel: buildRoundel("Brooker's Law"),
+          roundel: buildRoundel("Brook's Law"),
         },
         {
           topic: "Conway's Law",
@@ -102,6 +111,8 @@ const AllStations: { title: string; stations: StationProps[] } = {
           description: 'Organizations design systems that mirror their communication structures.',
           stations: [],
           roundel: buildRoundel("Conway's Law"),
+          name: '',
+          content: '',
         },
       ],
       roundel: buildRoundel('Latency'),
@@ -109,6 +120,8 @@ const AllStations: { title: string; stations: StationProps[] } = {
     {
       topic: 'Deming',
       title: 'The Wisdom of Deming',
+      name: 'The Wisdom of Deming',
+      content: 'The Wisdom of Deming',
       description:
         'Measure to improve, not to blame - the revolutionary insight that transformed Japanese industry and Silicon Valley culture.',
       stations: [
@@ -118,6 +131,8 @@ const AllStations: { title: string; stations: StationProps[] } = {
           description: 'Eliminate waste, optimize flow.',
           stations: [],
           roundel: buildRoundel('Lean'),
+          name: '',
+          content: '',
         },
         {
           topic: 'Agile',
@@ -125,6 +140,8 @@ const AllStations: { title: string; stations: StationProps[] } = {
           description: 'Iterate, adapt, deliver.',
           stations: [],
           roundel: buildRoundel('Agile'),
+          name: '',
+          content: '',
         },
       ],
       roundel: buildRoundel('Deming'),
@@ -132,6 +149,8 @@ const AllStations: { title: string; stations: StationProps[] } = {
     {
       topic: 'Modularity',
       title: 'Increasing Modularity',
+      name: 'Increasing Modularity',
+      content: 'Increasing Modularity',
       description:
         'As interfaces standardize, leaders fragment - the invisible force that evolves complex technologies into modular ecosystems.',
       stations: [
@@ -141,6 +160,8 @@ const AllStations: { title: string; stations: StationProps[] } = {
           description: 'As interfaces standardize, leaders fragment.',
           stations: [],
           roundel: buildRoundel('Increasing Modularity'),
+          name: '',
+          content: '',
         },
         {
           topic: 'Mind the Chasm',
@@ -148,6 +169,8 @@ const AllStations: { title: string; stations: StationProps[] } = {
           description: 'Crossing the chasm between early adopters and the mainstream.',
           stations: [],
           roundel: buildRoundel('Mind the Chasm'),
+          name: '',
+          content: '',
         },
       ],
       roundel: buildRoundel('Modularity'),
@@ -155,6 +178,8 @@ const AllStations: { title: string; stations: StationProps[] } = {
     {
       topic: 'Systems',
       title: "It's Systems All the Way Down",
+      name: "It's Systems All the Way Down",
+      content: "It's Systems All the Way Down",
       description: 'Everything is connected - feedback loops shapes all complex behavior.',
       stations: [
         {
@@ -164,6 +189,8 @@ const AllStations: { title: string; stations: StationProps[] } = {
             'How we communicate shapes what we say - Twitter makes us brief, books make us deep, TikTok makes us visual.',
           stations: [],
           roundel: buildRoundel('McLuhan'),
+          name: '',
+          content: '',
         },
       ],
       roundel: buildRoundel('Systems'),
@@ -173,6 +200,33 @@ const AllStations: { title: string; stations: StationProps[] } = {
 ---
 
 <Layout metadata={metadata}>
-  <Subway stations={AllStations.stations} title={AllStations.title} />
-  <BlogLatestPosts title="Latest Blog Posts" count={5} />
+  !AllStations && <Subway stations={AllStations.stations} title={AllStations.title} />
+  {/* <BlogLatestPosts title="Latest Blog Posts" count={5} /> */}
+  {/* 
+  <div class="flex flex-col">
+    <!-- Flex in a row (default) -->
+    <div class="p-4 bg-blue-200">Item 1</div>
+    <div class="p-4 bg-blue-300">Item 2</div>
+    <div class="p-4 bg-blue-400">Item 3</div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-4">
+    <div class="p-4 bg-purple-200">1</div>
+    <div class="p-4 bg-purple-300">2</div>
+    <div class="p-4 bg-purple-400">3</div>
+  </div>
+
+  <div class="flex justify-center items-center bg-gray-100">
+    <div class="p-8 bg-white rounded shadow-lg">Centered and calm!</div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-4">
+    <div class="p-4 bg-orange-200">1</div>
+    <div class="p-4 bg-orange-300">2</div>
+    <div class="p-4 bg-orange-400">3</div>
+    <div class="p-4 bg-teal-200">4</div>
+    <div class="p-4 bg-teal-300">5</div>
+    <div class="p-4 bg-teal-400">6</div>
+  </div>
+  */}
 </Layout>

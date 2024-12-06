@@ -4,8 +4,7 @@ import { getCollection, getEntry } from 'astro:content';
 import { twMerge } from 'tailwind-merge';
 import { toSlug } from '~/utils/toSlug';
 import StationMarker from './station/StationMarker.astro';
-//import { StationName } from './station/StationName';
-import DebugDiv from '../widgets/DebugDiv.astro';
+import { StationName } from './station/StationName';
 
 interface Props {
   title: string;
@@ -26,7 +25,6 @@ interface StationError {
 const TITLE_MAPPINGS: TitleMapping = {
   'Increasing Modularity': 'Law of Increasing Modularity',
 };
-
 
 const MAX_TITLE_LENGTH = 17;
 
@@ -62,41 +60,19 @@ async function findStationEntry(title: string): Promise<CollectionEntry<'station
 }
 
 // Data fetching
-const {
-  title,
-  themeClass,
-} = Astro.props;
+const { title, themeClass } = Astro.props;
 
 //const debug = import.meta.env.DEV || import.meta.env.DEBUG?.toLowerCase() === 'true'
-const debug = false
+const debug = false;
 
 console.log(`Station: ${title} debug: ${debug} ${import.meta.env.DEV}`);
-
 ---
 
-{debug ? (
-  <DebugDiv 
-    color="green-500" 
-    class={twMerge(
-      'station relative flex items-center justify-center',
-      'w-full sm:w-[calc(100%-2rem)] md:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)]',
-      'min-h-[8rem] sm:min-h-[10rem] md:min-h-[12rem] lg:min-h-[14rem]',
-      'p-4 sm:p-6 md:p-8 lg:p-10',
-      themeClass
-    )}
-    sourceFile="src/components/subway/SubwayStation.astro"
-    sourceLine={78}
-    breakpoint="w-full sm:w-[calc(100%-2rem)] md:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)]"
-    showBackground 
-    forceShow
-  >
-    <div class="w-full h-full flex justify-center transition-transform duration-200 ease-in-out">
-      <StationMarker debug={debug} />
-    </div>
-  </DebugDiv>
-) : 
-  <div class="relative w-full h-full flex justify-center transition-transform duration-200 ease-in-out">
+<div
+  class="relative w-full flex justify-center transition-transform duration-200 ease-in-out border-2 border-purple-500"
+>
+  <StationName name={title} />
+  <div class="absolute">
     <StationMarker debug={debug} />
-
   </div>
-}
+</div>

@@ -1,11 +1,15 @@
+import type { RoundelProps } from '~/components/widgets/Roundel.astro'
+
 export interface Station {
-title: unknown;
+  title: string
   name: string
   content: string
-  // Add other properties your station needs
+  description?: string
+  topic?: string
+  stations?: Station[]
+  roundel?: RoundelProps
 }
 
 export interface StationProps extends Station {
-roundel: IntrinsicAttributes & Props;
-  stations?: Station[]; // Add stations as an optional property
+  stations?: Station[]
 }

@@ -1,13 +1,17 @@
 import { cn } from "@/lib/utils";
-import * as React from "react";
 import { StationPopover } from "./StationPopover";
+//import * as React from "react";
+//import { StationPopover } from "./StationPopover";
 
 interface StationNameProps {
     name: string;
-    content: React.ReactNode;
 }
 
-export function StationName({ name, content }: StationNameProps) {
+export function StationName({ name }: StationNameProps) {
+
+    /***
+     * Handle async content
+     *
     const [asyncContent, setAsyncContent] = React.useState<React.ReactNode | null>(null);
 
     React.useEffect(() => {
@@ -20,22 +24,20 @@ export function StationName({ name, content }: StationNameProps) {
         }
     }, [content]);
 
-    const displayContent = (content && typeof content === 'object' && 'render' in content) 
+    const displayContent: React.ReactNode = (content && typeof content === 'object' && 'render' in content) 
         ? asyncContent 
         : content;
+    ***/
 
     return (
         <div className={cn(
-            "station-name-wrapper relative",
-            "flex items-center",
-            "h-full"
+            "station-name-wrapper ",
         )}>
             <StationPopover
                 name={name}
-                content={displayContent}
                 triggerClassName={cn(
                     "station-name",
-                    "text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl",
+                    "text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl",
                     "hover:text-current",
                     "transition-all duration-300"
                 )}
