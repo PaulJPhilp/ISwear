@@ -37,7 +37,7 @@ export function StationName({ name }: StationNameProps) {
                 name={name}
                 triggerClassName={cn(
                     "station-name",
-                    "text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl",
+                    "text-xs",
                     "hover:text-current",
                     "transition-all duration-300"
                 )}

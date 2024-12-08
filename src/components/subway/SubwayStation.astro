@@ -1,8 +1,4 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { getCollection, getEntry } from 'astro:content';
-import { twMerge } from 'tailwind-merge';
-import { toSlug } from '~/utils/toSlug';
 import StationMarker from './station/StationMarker.astro';
 import { StationName } from './station/StationName';
 
@@ -11,6 +7,7 @@ interface Props {
   themeClass?: string;
 }
 
+/***
 // Types
 interface TitleMapping {
   [key: string]: string;
@@ -29,6 +26,7 @@ const TITLE_MAPPINGS: TitleMapping = {
 const MAX_TITLE_LENGTH = 17;
 
 // Utility functions
+
 
 function formatTitle(text: string): string {
   if (text.length <= MAX_TITLE_LENGTH) return text;
@@ -58,21 +56,17 @@ async function findStationEntry(title: string): Promise<CollectionEntry<'station
     message: `Station entry not found: ${title} (slug: ${slug})`,
   } as StationError;
 }
+***/
 
-// Data fetching
-const { title, themeClass } = Astro.props;
+const { title } = Astro.props;
 
 //const debug = import.meta.env.DEV || import.meta.env.DEBUG?.toLowerCase() === 'true'
 const debug = false;
-
-console.log(`Station: ${title} debug: ${debug} ${import.meta.env.DEV}`);
 ---
 
-<div
-  class="relative w-full flex justify-center transition-transform duration-200 ease-in-out border-2 border-purple-500"
->
-  <StationName name={title} />
+<div class="relative w-full flex justify-center items-center transition-transform duration-200 ease-in-out">
+  {(<StationName name={title} />)}
   <div class="absolute">
-    <StationMarker debug={debug} />
+    {(<StationMarker debug={debug} />)}
   </div>
 </div>

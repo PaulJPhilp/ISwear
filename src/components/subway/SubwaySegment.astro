@@ -17,32 +17,28 @@ interface Props {
 const { station, isLastSegment, isFirstSegment, isOddSegment, themeClass, panelClass = '' } = Astro.props;
 
 const stations = station?.stations ?? [];
-const stationTitle = String(station?.title);
-console.log(`stationTitle: ${stationTitle}`);
+console.log(`stations: ${stations.length}`);
+//const stationTitle = String(station?.title);
 ---
 
 <div
   class={twMerge(
     'relative',
     'transition-all duration-300',
-    !isLastSegment && 'mb-[5px] sm:mb-[8px] md:mb-[10px] lg:mb-[12px] xl:mb-[15px]',
+    !isLastSegment && 'mb-[5px] sm:mb-[5px] md:mb-[10px] lg:mb-[12px] xl:mb-[15px]',
     panelClass
   )}
 >
-  <div class="relative w-full h-[120px] sm:h-[120px] md:h-[120px] lg:h-[120px] xl:h-[120px]">
+  <div class="relative w-full h-[120px] sm:h-[100px] md:h-[120px] lg:h-[140px] xl:h-[150px]">
     <SubwayLine {isOddSegment} {isFirstSegment} {isLastSegment} />
 
     {/* Sub-stations */}
     {
       stations && stations.length > 0 && (
-        <div class="absolute w-full h-full">
-          <div class="h-full flex flex-col items-center justify-evenly border-2 border-yellow-500">
-            {stations.map((subStation) => (
-              <div class="w-full">
-                <SubwayStation title={subStation.title} themeClass={themeClass} />
-              </div>
-            ))}
-          </div>
+        <div class="absolute flex flex-col items-center justify-evenly h-full w-full border border-red-500  ">
+          {stations.map((subStation) => (
+            <SubwayStation title={subStation.title} themeClass={themeClass} />
+          ))}
         </div>
       )
     }
@@ -51,7 +47,7 @@ console.log(`stationTitle: ${stationTitle}`);
   {
     !isLastSegment && station && (
       <div class={twMerge('relative flex flex-col items-center', 'pt-6 sm:pt-7 md:pt-8 lg:pt-9 xl:pt-10')}>
-        <Roundel {...station.roundel as RoundelProps} />
+        <Roundel {...(station.roundel as RoundelProps)} />
       </div>
     )
   }
